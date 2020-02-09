@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Componentes_EL.Escuela.EscuelaActivity"
+    tools:showIn="@layout/activity_escuela"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/icons"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:padding="20dp">
+            <!--
+            <EditText
+                android:id="@+id/find_nom"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="2"
+                android:hint="@string/edtx_buscar"
+                android:textColor="@color/primary_text" />
+                -->
+            <AutoCompleteTextView
+                android:id="@+id/auto"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/edtx_buscar"
+                android:layout_weight="2"
+                android:completionThreshold="1"
+                android:popupBackground="@color/colorWhite"
+                android:completionHint="@string/edtx_buscar"/>
+
+
+            <ImageView
+                android:id="@+id/el_find"
+                android:layout_width="55dp"
+                android:layout_height="41dp"
+                android:layout_weight="1"
+                android:src="@drawable/searchgris" />
+
+            <ImageView
+                android:id="@+id/el_all"
+                android:layout_width="40dp"
+                android:layout_height="41dp"
+                android:layout_weight="1"
+                android:src="@drawable/allgris" />
+
+
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/list_view_base"
+            android:layout_width="match_parent"
+            android:layout_height="590dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">crud_encuesta</string>
+    <string name="title_agregar_escuela">Enter Data\'s School</string>
+    <string name="lbl_nom_escuela">School\'s Name</string>
+    <string name="hint_nom">Name</string>
+    <string name="title_activity_escuela">School</string>
+    <string name="agregar_string">Insert</string>
+    <string name="cancelar_string">Cancel</string>
+
+    <string name="aceptar">Accept</string>
+    <string name="lbl_borrar">Are you sure?</string>
+    <string name="lbl_borrar_escuela">Are you sure? All careers associated with school will be eliminated.</string>
+
+    <string name="title_borrar">Delete</string>
+    <string name="men_actualizar">Updated Successfully</string>
+    <string name="men_guardar">Saved Successfully</string>
+    <string name="men_camp_vacios">Empty Fields</string>
+
+    <string name="actualizar_string">Change</string>
+    <string name="title_agregar_carrera">Enter Data\'s Major</string>
+    <string name="title_activity_carrera">Major</string>
+    <string name="lbl_nom_carrera">Major\'s Name</string>
+
+    <string name="ap_hint_username">Username</string>
+    <string name="ap_hint_password">Password</string>
+    <string name="ap_button_login">LOGIN</string>
+    <string name="ap_text_copy">El Salvador University</string>
+    <string name="ap_buscar_evaluacion">Search evaluation</string>
+    <string name="ap_buscar_turno">Search turn</string>
+    <string name="ap_item">Item</string>
+    <string name="ap_title_dialogo_evaluacion">New</string>
+    <string name="ap_nombre_eva">Evaluation name</string>
+    <string name="ap_duracion_eva">duration</string>
+    <string name="ap_num_intento_eva">number of attempts</string>
+    <string name="ap_desc_eva">Description</string>
+    <string name="ap_visible_eva">Is it allowed to go back? </string>
+    <string name="ap_title_dialogo_turno">New</string>
+    <string name="ap_dateinit">Start</string>
+    <string name="ap_datefinish">Finish</string>
+    <string name="ap_pass_turno">Password</string>
+    <string name="ap_visible_turno">Visible</string>
+    <string name="ap_agregar_turno">Add</string>
+    <string name="ap_cancelar_turno">Cancel</string>
+    <string name="ap_agregar_eva">Add</string>
+    <string name="ap_cancelar_eva">Cancel</string>
+    <string name="ap_titlevista_eva">Data</string>
+    <string name="ap_ok">OK</string>
+    <string name="ap_retroceder">Is it allowed to go back:</string>
+    <string name="ap_titlevista_turno">New</string>
+
+    <string name="title_activity_materia">Matter</string>
+    <string name="title_agregar_materia">Enter Data\'s Subject</string>
+    <string name="lbl_nom_pensum">Pensum</string>
+    <string name="lbl_nom_cod_materia">Subject\'s Code</string>
+    <string name="lbl_nom_materia">Subject\'s Name</string>
+    <string name="lbl_electiva">Elective</string>
+    <string name="lbl_max_pregunta">Maximum of questions</string>
+    <string name="hint_max">Maximum</string>
+    <string name="hint_cod_mat">Code</string>
+    <string name="men_eliminar">Delete Succesfully</string>
+    <string name="lbl_nom_encuesta">Survey\'s Name</string>
+    <string name="hint_descripcion">Description</string>
+    <string name="hint_fecha_final">dd/mm/aa</string>
+    <string name="lbl_fecha">Select Date</string>
+    <string name="title_activity_encuesta">Survey</string>
+
+    <string name="title_agregar_encuesta">Add a Survey</string>
+    <string name="lbl_fecha_in">Start Date</string>
+    <string name="lbl_fecha_fi">End Date</string>
+    <string name="men_fecha_error">Incorrect Date</string>
+
+    <string name="men_fecha_in">Initial date of Survey</string>
+    <string name="men_fecha_fi">Final date of Survey</string>
+    <string name="men_hora_in">Initial hour of Survey</string>
+    <string name="men_hora_fi">Final hour of Survey</string>
+    <string name="ap_datefinal">Finish</string>
+    <string name="ap_edt_datefinal">Date</string>
+    <string name="ap_qdt_timefinal">Time</string>
+    <string name="title_activity_info">Information</string>
+    <string name="title_activity_act">Update</string>
+    <string name="el_buscarMat">Searching Subjects</string>
+    <string name="lbl_facu">Faculty</string>
+    <string name="lbl_cod_escuela">Code of School</string>
+    <string name="ap_titlevista_turno_pass">Access to the attempt</string>
+    <string name="ap_indicaciones">Enter the password to access the attempt.</string>
+    <string name="ap_ingreso_contraseña">Password</string>
+
+    <string name="area">Area</string>
+    <string name="evaluacion">Evaluation</string>
+
+    <string name="mt_titulo_del_area">Area\'s name</string>
+    <string name="mt_aleatorio">Radom</string>
+    <string name="mt_cantidad_de_preguntas">Number of questions</string>
+    <string name="mt_peso_del_rea">Area weight</string>
+    <string name="mt_clave">Key </string>
+    <string name="mt_area">Area</string>
+    <string name="mt_agregar">Add</string>
+    <string name="mt_cancelar">Cancel</string>
+    <string name="mt_area_agregada">Area added successfully</string>
+    <string name="mt_campos_vacios">Error, there are empty fields</string>
+    <string name="mt_editar">Edit</string>
+    <string name="mt_actualizar">Update</string>
+    <string name="mt_eliminar">Delete</string>
+    <string name="mt_eliminar_area">Do you want to delete this area?</string>
+    <string name="mt_eliminado_msj">It has been removed successfully</string>
+    <string name="mt_agregar_clave">Do you want to add a new key?</string>
+    <string name="mt_aceptar">Accept</string>
+    <string name="mt_clave_agregada">New key added</string>
+    <string name="mt_registro_actualizado">Updated registration</string>
+    <string name="mt_eliminar_clave">¿Do you want to delete this key?</string>
+    <string name="mt_cantidad_positiva">The numbers entered must be greater than zero</string>
+    <string name="mt_registro_exito">Registry inserted successfully</string>
+    <string name="mt_finalizar">Finish</string>
+    <string name="mt_finalizar_evaluacion">¿Do you want to finish the evaluation?</string>
+    <string name="mt_ir_inicio">Go Home</string>
+    <string name="mt_buscar_area">Search area</string>
+    <string name="mt_cant_preguntas_ingresadas">Error, the number of questions entered exceeds the amount in this area</string>
+    <string name="mt_cargar_bd">Do you want to Load the database</string>
+    <string name="mt_cargar">Load</string>
+    <string name="mt_bd_cargada">The database has been loaded</string>
+    <string name="mt_vaciar_bd">Do you want to Empty the database</string>
+    <string name="mt_vaciar">Empty</string>
+    <string name="mt_bd_vaciada">The database has been emptied</string>
+    <string name="clavearea">KeyArea</string>
+
+    <string name="ap_evaluaciones">Pensum</string>
+    <string name="ap_buscar_pensum">Search pensum</string>
+    <string name="ap_title_dialogo_pensum">New</string>
+    <string name="ap_anio_pensum">Year of the pensum</string>
+    <string name="ap_title_dialogo_pensum_materia">Add matter</string>
+    <string name="ap_titlevista_pensum">pensum subjects</string>
+    <string name="ap_materias">List of subjects</string>
+    <string name="ap_pensum_materia">Pensum Matter</string>
+    <string name="ap_buscar_pensum_materia">Search matter</string>
+    <string name="ap_Turnos">Turn</string>
+    <string name="ap_Evaluaciones">Evaluations</string>
+    <string name="ap_el_usuario_no_existe">Username does not exist</string>
+    <string name="ap_error">Error!</string>
+    <string name="ap_no_posee_carga">You do not have academic load</string>
+    <string name="ap_debes_de_llenar">You must fill in the fields of name, intent and duration</string>
+    <string name="ap_debes_ingresar">You must enter a query name</string>
+    <string name="ap_bienvenido">Welcome </string>
+    <string name="ap_usuario"> Invalid username and / or password</string>
+    <string name="ap_nuevo">New</string>
+    <string name="ap_agregar">Add</string>
+    <string name="ap_llena_todos_los_campos">You must fill and select all the fields</string>
+    <string name="ap_debes_seleccionar">You must select a subject</string>
+    <string name="ap_contrasenia_no_valida">Invalid password</string>
+    <string name="ap_llena_los_campos">Must fill the fields</string>
+    <string name="ap_cancelar">Cancel</string>
+    <string name="ap_fecha_no_valida">Date not valid, please check</string>
+    <string name="ap_salir">Do you want to exit the application:</string>
+    <string name="ap_vuelve">Come back soon </string>
+    <string name="ap_delete_turno">Are you sure? All the keys associated with this turn will be eliminated.</string>
+    <string name="ap_delete_pensum">Are you sure? All the subject-matter objects associated with this curriculum will be eliminated.</string>
+    <string name="ap_delete_evaluación">Are you sure? All shifts associated with this evaluation will be eliminated.</string>
+    <string name="ap_debes01">You must fill in the fields of name, intent and duration</string>
+    <string name="ap_desea01">Do you want to delete the record?</string>
+    <string name="ap_visible_si">Visible: YES</string>
+    <!-- DC -->
+    <string name="msg_bienvenida">Welcome!</string>
+    <string name="opc_escuela">School</string>
+    <string name="opc_docente">Teacher</string>
+    <string name="opc_alumno">Student</string>
+    <string name="opc_encuesta">Poll</string>
+    <string name="texto_opciones">Options</string>
+    <string name="texto_preguntas">Questions</string>
+    <string name="texto_descripcion">Description</string>
+    <string name="texto_titulo_dialogo_gpo_emp">Add Pairing Group</string>
+    <string name="texto_titulo_dialogo_opcion">Add Option</string>
+    <string name="hint_opcion">Option</string>
+    <string name="checkb_correcta">Correct</string>
+    <string name="texto_titulo_dialogo_pregunta">Add Question</string>
+    <string name="hint_pregunta">Question</string>
+    <string name="texto_gpo_emp">Pairing groups</string>
+    <string name="opc_matciclo">Materia Ciclo</string>
+    <string name="opc_pensum">Pensum</string>
+    <string name="buscar_preg">Search Question</string>
+    <string name="opc_clave">Key</string>
+    <string name="msg_falta_desc_gpo_emp">Enter the description of the pairing group!</string>
+    <string name="msg_falta_texto_opc">Enter the text of the option!</string>
+    <string name="msg_falta_texto_preg">Enter the text of the question!</string>
+    <string name="msg_consulta_nula">You must not left empty the Text field for search!</string>
+    <string name="positivo">Yes</string>
+    <string name="negativo">No</string>
+    <string name="edit_preg">Edit Question</string>
+    <string name="del_preg_1">Are you sure of delete the question?, it will delete</string>
+    <string name="del_preg_2">options in case of accept!!</string>
+    <string name="edit_gpo_emp">Edit Pairing Group</string>
+    <string name="edit_opc">Edit Option</string>
+    <string name="del_opc">Are you sure of delete the option?</string>
+    <string name="del_gpo_emp_1">Are you sure of delete the pairing group?, it will delete</string>
+    <string name="del_gpo_emp_2">question(s) and</string>
+    <string name="del_gpo_emp_3">option(s) in case of accept!!</string>
+    <string name="nuevo_gpo_emp">New Pairing Group</string>
+    <string name="agregar_gpo_emp">Add Pairing Group</string>
+    <string name="nueva_opc">New Option</string>
+    <string name="agregar_opc">Add option</string>
+    <string name="nueva_preg">New Question</string>
+    <string name="agregar_preg">Add question</string>
+    <!-- END DC -->
+
+    <!-- Estudiante -->
+    <string name="est_titulo">Students</string>
+    <string name="est_titulo2">Student</string>
+    <string name="est_titulo3">Student: </string>
+    <string name="est_titulo_editar">Student Edit: </string>
+    <string name="est_titulo_registrar">New Student register</string>
+    <string name="est_edtx_carnet">Student\'s ID</string>
+    <string name="est_chck_activo">Active</string>
+    <string name="est_tv_nombre">Name: </string>
+    <string name="est_tv_anio">Ingress Year: </string>
+    <string name="est_borrar">Do you want to delete this Student?</string>
+    <!-- END Estudiante-->
+
+    <!-- Docente -->
+    <string name="dcn_titulo">Teachers</string>
+    <string name="dcn_titulo2">Teacher</string>
+    <string name="dcn_titulo3">Teacher: </string>
+    <string name="dcn_titulo_editar">Teacher Edit: </string>
+    <string name="dcn_titulo_registrar">New Teacher register</string>
+    <string name="dcn_edtx_carnet">Teacher\'s ID</string>
+    <string name="dcn_chck_activo">Active</string>
+    <string name="dcn_tv_nombre">Name: </string>
+    <string name="dcn_tv_escuela">School: </string>
+    <string name="dcn_tv_anio">Title Year: </string>
+    <string name="dcn_tv_descripcion">Description: </string>
+    <string name="dcn_tv_jornada">Journey Type: </string>
+    <string name="dcn_tv_cargo">Actual Charge: </string>
+    <string name="dcn_tv_cargo_sec">Secondary Charge: </string>
+    <string name="dcn_borrar">Do you want to delete this Teacher?</string>
+    <!-- END Docente -->
+
+    <!-- Materia_Ciclo -->
+    <string name="mtc_titulo">Semester Courses</string>
+    <string name="mtc_titulo2">Semester Course</string>
+    <string name="mtc_titulo3">Semester Course: </string>
+    <string name="mtc_titulo_registrar">New Semester Course register</string>
+    <string name="mtc_titulo_editar">Edit Semester Course: </string>
+    <string name="mtc_cicloi">Semester I</string>
+    <string name="mtc_cicloii">Semester II</string>
+    <string name="mtc_vista">Semester Course: </string>
+    <string name="mtc_materia">Course: </string>
+    <string name="mtc_ciclo">Semester: </string>
+    <string name="mtc_anio">Year: </string>
+    <string name="mtc_borrar">Do you want to delete this Semester Course?</string>
+    <!-- END Materia_Ciclo -->
+
+    <!-- Varios -->
+    <string name="btn_agregar">Add</string>
+    <string name="btn_registrar">Add</string>
+    <string name="btn_guardar">Save</string>
+    <string name="btn_cancelar">Cancel</string>
+    <string name="btn_salir">Exit</string>
+    <string name="edtx_buscar">Search</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+    <string name="alertUser">User\'s Credentials</string>
+    <string name="usuario">User: </string>
+    <string name="clave">Pass: </string>
+    <string name="set_anio">Pick a Year</string>
+    <!-- END Varios -->
+
+    <!-- Validaciones -->
+    <string name="campo_v">The field</string>
+    <string name="vacio_v">it\'s empty.</string>
+    <string name="rellene_v">Please fill the form.</string>
+    <string name="anio_v">Invalid Year</string>
+    <string name="nombre_v">Name</string>
+    <string name="anioI_v">Ingress Year</string>
+    <string name="carnet_v">Carnet</string>
+    <string name="aniot_v">Title Yeat</string>
+    <string name="tipoj_v">Journey Type</string>
+    <string name="cargoa_v">Actual Charge</string>
+    <string name="cargos_v">Secondary Charge</string>
+    <!-- END Validaciones -->
+    <string name="estadistica">No Data.</string>
+    <string name="txesta">Statistics</string>
+    <string name="txesta_eva">Statistics of Evaluations</string>
+
+    <string-array name="fruits_array">
+        <item>Apples</item>
+        <item>Apricots</item>
+        <item>Avocado</item>
+        <item>Annona</item>
+        <item>Banana</item>
+        <item>Blueberry</item>
+        <item>Blackberry</item>
+        <item>Blackapple</item>
+        <item>Custard Apple</item>
+        <item>Clementine</item>
+        <item>Cantalope</item>
+        <item>Date</item>
+        <item>Elderberry</item>
+        <item>Fig</item>
+        <item>Grapefruit</item>
+        <item>Grape</item>
+        <item>Gooseberry</item>
+        <item>Guava</item>
+        <item>Honeydew melon</item>
+        <item>Jackfruit</item>
+        <item>Juniper Berry</item>
+        <item>Kiwi</item>
+        <item>Kumquat</item>
+        <item>Lemons</item>
+        <item>Limes</item>
+        <item>Lychee</item>
+        <item>Mango</item>
+        <item>Mandarin</item>
+        <item>Nectaraine</item>
+        <item>Orange</item>
+        <item>Olive</item>
+        <item>Prunes</item>
+        <item>Pears</item>
+        <item>Plum</item>
+        <item>Pineapple</item>
+        <item>Peach</item>
+        <item>Papaya</item>
+        <item>Pomelo</item>
+        <item>Raspberries</item>
+        <item>Rambutan</item>
+        <item>Strawberries</item>
+        <item>Sweety</item>
+        <item>Salmonberry</item>
+        <item>Tangerines</item>
+        <item>Tomato</item>
+        <item>Ugli</item>
+        <item>Watermelon</item>
+        <item>Woodapple</item>
+    </string-array>
+
+
+</resources>

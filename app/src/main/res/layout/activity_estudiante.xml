@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_nuevo_estudiante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingRight="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/est_titulo"
+            android:textColor="@color/icons"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="18dp" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/linearBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/icons"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/auto"
+                android:layout_width="253dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/edtx_buscar"
+                android:layout_marginRight="10dp"
+                android:layout_weight="2"
+                android:completionThreshold="1"
+                android:popupBackground="@color/colorWhite"
+                android:completionHint="@string/edtx_buscar"
+                android:textColor="@color/primary_text"/>
+            <ImageView
+                android:id="@+id/el_find"
+                android:layout_width="55dp"
+                android:layout_height="41dp"
+                android:layout_weight="1"
+                android:src="@drawable/searchgris" />
+            <ImageView
+                android:id="@+id/el_all"
+                android:layout_width="40dp"
+                android:layout_height="41dp"
+                android:layout_weight="1"
+                android:src="@drawable/allgris" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="379dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="0.9">
+                <ListView
+                    android:id="@+id/lista_estudiante"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="true">
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/side_index"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="0.1"
+                ></LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

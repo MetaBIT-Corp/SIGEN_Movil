@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_descripcion"
+            android:textAlignment="gravity"
+            android:layout_weight="0.3"
+            android:paddingRight="5dp"
+            android:text="@string/texto_descripcion"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="0.9">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/btn_ag_preg"
+                android:layout_weight="1"
+                android:background="@drawable/question"/>
+
+            <android.support.v4.widget.Space
+                android:layout_height="0dp"
+                android:layout_width="8dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/btn_editar"
+                android:layout_weight="1"
+                android:background="@drawable/ic_edit"/>
+
+            <android.support.v4.widget.Space
+                android:layout_height="0dp"
+                android:layout_width="5dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:id="@+id/btn_eliminar"
+                android:background="@drawable/ic_delete"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
