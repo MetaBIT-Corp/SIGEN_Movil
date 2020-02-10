@@ -250,48 +250,7 @@ public class Operaciones_CRUD {
     public static ArrayList<Materia> todosMateria(SQLiteDatabase db,int rol, int id) {
         ArrayList<Materia> lista = new ArrayList<>();
         Cursor cu = null;
-        if(rol==1){
-            cu = db.rawQuery("SELECT\n" +
-                    "PDG_DCN_DOCENTE.IDUSUARIO,\n" +
-                    "MATERIA_CICLO.ID_CAT_MAT,\n" +
-                    "CAT_MAT_MATERIA.CODIGO_MAT,\n" +
-                    "CAT_MAT_MATERIA.NOMBRE_MAR,\n" +
-                    "CAT_MAT_MATERIA.ES_ELECTIVA,\n" +
-                    "CAT_MAT_MATERIA.MAXIMO_CANT_PREGUNTAS\n" +
-                    "FROM\n" +
-                    "PDG_DCN_DOCENTE\n" +
-                    "INNER JOIN\n" +
-                    "CARGA_ACADEMICA ON\n" +
-                    "PDG_DCN_DOCENTE.ID_PDG_DCN=CARGA_ACADEMICA.ID_PDG_DCN\n" +
-                    "INNER JOIN\n" +
-                    "MATERIA_CICLO ON\n" +
-                    "CARGA_ACADEMICA.ID_MAT_CI=MATERIA_CICLO.ID_MAT_CI\n" +
-                    "INNER JOIN\n" +
-                    "CAT_MAT_MATERIA ON\n" +
-                    "MATERIA_CICLO.ID_CAT_MAT=CAT_MAT_MATERIA.ID_CAT_MAT\n" +
-                    "WHERE PDG_DCN_DOCENTE.IDUSUARIO= "+id,null);
-        }
-        if (rol==2){
-            /*cu = db.rawQuery("SELECT\n" +
-                    "ESTUDIANTE.IDUSUARIO,\n" +
-                    "MATERIA_CICLO.ID_CAT_MAT,\n" +
-                    "CAT_MAT_MATERIA.CODIGO_MAT,\n" +
-                    "CAT_MAT_MATERIA.NOMBRE_MAR,\n" +
-                    "CAT_MAT_MATERIA.ES_ELECTIVA,\n" +
-                    "CAT_MAT_MATERIA.MAXIMO_CANT_PREGUNTAS\n" +
-                    "FROM ESTUDIANTE\n" +
-                    "INNER JOIN DETALLEINSCEST ON\n" +
-                    "ESTUDIANTE.ID_EST=DETALLEINSCEST.ID_EST\n" +
-                    "INNER JOIN CARGA_ACADEMICA ON\n" +
-                    "DETALLEINSCEST.ID_CARG_ACA=CARGA_ACADEMICA.ID_CARG_ACA\n" +
-                    "INNER JOIN MATERIA_CICLO ON\n" +
-                    "MATERIA_CICLO.ID_MAT_CI=CARGA_ACADEMICA.ID_MAT_CI\n" +
-                    "INNER JOIN CAT_MAT_MATERIA ON\n" +
-                    "CAT_MAT_MATERIA.ID_CAT_MAT=MATERIA_CICLO.ID_CAT_MAT\n" +
-                    "WHERE ESTUDIANTE.IDUSUARIO="+5,null);*/
-            cu=db.rawQuery("Select * from cat_mat_materia",null);
-        }
-
+        cu=db.rawQuery("Select * from cat_mat_materia",null);
         if (cu.moveToFirst()) {
             Materia m;
             do {

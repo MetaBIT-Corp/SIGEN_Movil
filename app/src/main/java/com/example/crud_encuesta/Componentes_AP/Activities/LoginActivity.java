@@ -109,13 +109,14 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
 
     @Override
     public void onResponse(JSONObject response) {
+        System.out.println(response.toString());
         daoUsuario.DeleteUserAll();
         daoUsuario.DeleteSesionAll();
         daoUsuario.DeleteMateriasUser();
         daoUsuario.DeleteEstudianteAll();
         try{
             JSONObject jsonUser = response.getJSONObject("user");
-            JSONObject jsonEstudiante = response.getJSONObject("estudiante");
+            //JSONObject jsonEstudiante = response.getJSONObject("estudiante");
             if(jsonUser!= null){
                 Usuario user = new Usuario();
                 Estudiante estudiante = new Estudiante();
@@ -127,15 +128,16 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
                 user.setNOMUSUARIO(jsonUser.getString("email"));
                 user.setROL(jsonUser.getInt("role"));
 
-                estudiante.setId(jsonEstudiante.getInt("id_est"));
+                /*estudiante.setId(jsonEstudiante.getInt("id_est"));
                 estudiante.setActivo(jsonEstudiante.getInt("activo"));
                 estudiante.setAnio_ingreso(jsonEstudiante.getString("anio_ingreso"));
                 estudiante.setCarnet(jsonEstudiante.getString("carnet"));
                 estudiante.setId_usuario(jsonEstudiante.getInt("user_id"));
-                estudiante.setNombre(jsonEstudiante.getString("nombre"));
+                estudiante.setNombre(jsonEstudiante.getString("nombre"));*/
 
 
-                if(daoUsuario.Insertar(user)&& daoUsuario.insertar(estudiante)){
+                //if(daoUsuario.Insertar(user)&& daoUsuario.insertar(estudiante)){
+                if(daoUsuario.Insertar(user)){
                     if(daoUsuario.loginUsuario(user.getCLAVE(),user.getNOMUSUARIO())){
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("id_user",user.getIDUSUARIO());
@@ -153,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
             }
 
         }catch(Exception e){
-            Toast.makeText(this, "Error: El usuario no existe",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error: El usuario no existe. Catch",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -162,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     }
 
     public void accesoAWebService(String email, String pass){
-        String url = "http://sigen.herokuapp.com/api/user/acceso/"+email+"/"+pass;
+        String url = "http://192.168.1.4:8001/api/user/acceso/"+email+"/"+pass;
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

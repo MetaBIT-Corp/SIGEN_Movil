@@ -76,7 +76,6 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
             progressDialog.cancel();
         }else{
             //Llamada al WS
-            //Ahorita se ha dejado 7 porque ese es el id del usuario jose
             getMateriasWS(id);
         }
     }
@@ -92,6 +91,7 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     public void onResponse(JSONArray response) {
         Materia materia;
         try {
+            System.out.println(response.toString());
             db.delete(EstructuraTablas.MATERIA_TABLA_NAME,null,null);
             db.delete("carga_academica",null,null);
             db.delete("materia_ciclo",null,null);
@@ -137,13 +137,13 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
                 db.execSQL(sql);
 
                 //Agregando detalle de incripcion de estudiante
-                c=new ContentValues();
-                c.put("id_est",jsonObject.optInt("id_est"));
-                c.put("id_carg_aca",jsonObject.optInt("id_carg_aca"));
-                Operaciones_CRUD.insertar(db,c,this,"detalleinscest");
+                if(jsonObject.has("id_est")) {
+                    c = new ContentValues();
+                    c.put("id_est", jsonObject.optInt("id_est"));
+                    c.put("id_carg_aca", jsonObject.optInt("id_carg_aca"));
+                    Operaciones_CRUD.insertar(db, c, this, "detalleinscest");
+                }
 
-                //sql="UPDATE detalleinscest set id_det_insc="+jsonObject.optString("id_insc_est")+ " where id_est="+jsonObject.optString("id_est");
-                //db.execSQL(sql);
             }
         } catch (JSONException e) {
             Log.d("Error", e.toString());
@@ -156,7 +156,13 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     }
 
     public void getMateriasWS(int id){
-        url = "https://sigen.herokuapp.com/api/materias/estudiante/"+id;
+        String domain="http://192.168.1.4:8001";
+        if(rol==1){
+            url = domain+"/api/materias/docente/"+id;
+        }
+        if(rol==2){
+            url =domain+"/api/materias/estudiante/"+id;
+        }
         jsonArrayRequest=new JsonArrayRequest(Request.Method.GET,url,null,this,this);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(8000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonArrayRequest);
