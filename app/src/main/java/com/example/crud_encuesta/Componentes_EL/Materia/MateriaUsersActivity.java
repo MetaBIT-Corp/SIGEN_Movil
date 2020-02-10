@@ -39,6 +39,8 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     ArrayList<Materia> listaMateria = new ArrayList<>();
     String url;
 
+    private String url_base = "http://sigen.herokuapp.com/api/";
+
     private JsonArrayRequest jsonArrayRequest;
     private RequestQueue requestQueue;
     ProgressDialog progressDialog;
@@ -156,12 +158,11 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     }
 
     public void getMateriasWS(int id){
-        String domain="http://192.168.1.4:8001";
         if(rol==1){
-            url = domain+"/api/materias/docente/"+id;
+            url = url_base+"materias/docente/"+id;
         }
         if(rol==2){
-            url =domain+"/api/materias/estudiante/"+id;
+            url =url_base+"materias/estudiante/"+id;
         }
         jsonArrayRequest=new JsonArrayRequest(Request.Method.GET,url,null,this,this);
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(8000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
