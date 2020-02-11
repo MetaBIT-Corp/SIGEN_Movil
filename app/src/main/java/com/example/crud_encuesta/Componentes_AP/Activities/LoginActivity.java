@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
+import com.example.crud_encuesta.Componentes_MR.Docente.Docente;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.Estudiante;
 import com.example.crud_encuesta.Componentes_MT.EncuestaWS.EncuestaActivityWS;
 import com.example.crud_encuesta.DatabaseAccess;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
+    String UrlBase = "http://sigen.herokuapp.com/";
 
     SQLiteDatabase baseDeDatos;
     TextInputLayout tvUsuario;
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
                 Usuario usuarioLogueado = daoUsuario.getUsuarioLogueado();
                 //si hay un usuario logueado en la base de datos
                 if(usuarioLogueado != null){
-                    //si el usuario que se ingresa es igual al que esta en la base lo deja entrar de inmediato
+                    //si el usuario que se ingresa es igual al que esta en la base local lo deja entrar de inmediato
                     if(usuario.equals(usuarioLogueado.getNOMUSUARIO()) && pass.equals(usuarioLogueado.getCLAVE())){
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("id_user",usuarioLogueado.getIDUSUARIO());
@@ -104,40 +106,65 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(this, "Error: " + error,Toast.LENGTH_LONG).show();
-
     }
 
     @Override
     public void onResponse(JSONObject response) {
         System.out.println(response.toString());
+        //Si se ingresa un nuevo usuario a la base, se borran los registros de
+        //las demás tablas relacionadas con el usuario anterior
+
         daoUsuario.DeleteUserAll();
         daoUsuario.DeleteSesionAll();
         daoUsuario.DeleteMateriasUser();
         daoUsuario.DeleteEstudianteAll();
+        daoUsuario.DeleteDocenteAll();
+
+        Toast.makeText(this,response.toString(),Toast.LENGTH_LONG).show();
         try{
+
             JSONObject jsonUser = response.getJSONObject("user");
-            //JSONObject jsonEstudiante = response.getJSONObject("estudiante");
             if(jsonUser!= null){
                 Usuario user = new Usuario();
-                Estudiante estudiante = new Estudiante();
-
-
 
                 user.setIDUSUARIO(jsonUser.getInt("id"));
                 user.setCLAVE(jsonUser.getString("name"));
                 user.setNOMUSUARIO(jsonUser.getString("email"));
                 user.setROL(jsonUser.getInt("role"));
+                Estudiante estudiante = new Estudiante();
+                Docente docente = new Docente();
 
-                /*estudiante.setId(jsonEstudiante.getInt("id_est"));
-                estudiante.setActivo(jsonEstudiante.getInt("activo"));
-                estudiante.setAnio_ingreso(jsonEstudiante.getString("anio_ingreso"));
-                estudiante.setCarnet(jsonEstudiante.getString("carnet"));
-                estudiante.setId_usuario(jsonEstudiante.getInt("user_id"));
-                estudiante.setNombre(jsonEstudiante.getString("nombre"));*/
+                //Si el usuario tiene role de estudiantes
+                if(user.getROL()==2){
 
+                    JSONObject jsonEstudiante = response.getJSONObject("estudiante");
+                    estudiante.setId(jsonEstudiante.getInt("id_est"));
+                    estudiante.setActivo(jsonEstudiante.getInt("activo"));
+                    estudiante.setAnio_ingreso(jsonEstudiante.getString("anio_ingreso"));
+                    estudiante.setCarnet(jsonEstudiante.getString("carnet"));
+                    estudiante.setId_usuario(jsonEstudiante.getInt("user_id"));
+                    estudiante.setNombre(jsonEstudiante.getString("nombre"));
+                }
+                //Si el usuario es docente
+                if(user.getROL()==1){
+
+                    JSONObject jsonDocente = response.getJSONObject("docente");
+                    docente.setId(jsonDocente.getInt("id_pdg_dcn"));
+                    docente.setActivo(jsonDocente.getInt("activo"));
+                    docente.setAnio_titulo(jsonDocente.getString("anio_titulo"));
+                    docente.setCargo_actual(jsonDocente.getInt("id_cargo_actual"));
+                    docente.setCargo_secundario(jsonDocente.getInt("id_segundo_cargo"));
+                    docente.setCarnet(jsonDocente.getString("carnet_dcn"));
+                    docente.setDescripcion(jsonDocente.getString("descripcion_docente"));
+                    docente.setId_usuario(jsonDocente.getInt("user_id"));
+                    docente.setNombre(jsonDocente.getString("nombre_docente"));
+                    docente.setTipo_jornada(jsonDocente.getInt("tipo_jornada"));
+                }
 
                 //if(daoUsuario.Insertar(user)&& daoUsuario.insertar(estudiante)){
-                if(daoUsuario.Insertar(user)){
+                if(daoUsuario.Insertar(user) &&
+                        (daoUsuario.insertar(estudiante) ||
+                                daoUsuario.insertar(docente))){
                     if(daoUsuario.loginUsuario(user.getCLAVE(),user.getNOMUSUARIO())){
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("id_user",user.getIDUSUARIO());
@@ -155,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
             }
 
         }catch(Exception e){
-            Toast.makeText(this, "Error: El usuario no existe. Catch",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error: El usuario no existe.",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -164,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     }
 
     public void accesoAWebService(String email, String pass){
-        String url = "http://192.168.1.4:8001/api/user/acceso/"+email+"/"+pass;
+        String url = UrlBase + "api/user/acceso/"+email+"/"+pass;
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

@@ -54,6 +54,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
     JsonObjectRequest jsonObjectRequest;
     DAOTurno daoTurno;
     ProgressDialog progressDialog;
+    String UrlBase = "http://sigen.herokuapp.com/";
 
     DAOEvaluacion daoEvaluacion;
     DAOUsuario daoUsuario;
@@ -297,6 +298,8 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
                 newEvaluacion.setDuracion(evaluacion.getInt("duracion"));
                 newEvaluacion.setNombre(evaluacion.getString("nombre_evaluacion"));
                 newEvaluacion.setIdCargaAcad(evaluacion.getInt("id_carga"));
+                newEvaluacion.setRevision(evaluacion.getInt("revision"));
+                newEvaluacion.setMostrar_nota(evaluacion.getInt("mostrar_nota"));
 
                 daoEvaluacion.InsertarWS(newEvaluacion);
             }
@@ -339,7 +342,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
         }
     }
     public void obtenerEvalucionesTurnos(int id_carga_academica) {
-        String url = "http://sigen.herokuapp.com/api/evaluaciones_m/turnos_m/"+id_carga_academica;
+        String url = UrlBase + "api/evaluaciones_m/turnos_m/"+id_carga_academica+"/"+usuario.getROL();
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
