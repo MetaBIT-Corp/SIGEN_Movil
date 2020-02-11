@@ -8,6 +8,8 @@ public class Evaluacion {
     int cantIntento;
     String nombre;
     String descripcion;
+    int revision;
+    int mostrar_nota;
 
     public Evaluacion() {
     }
@@ -23,6 +25,17 @@ public class Evaluacion {
         this.descripcion = descripcion;
     }
 
+    public Evaluacion(int id, int idCargaAcad, int duracion, int cantIntento, String nombre, String descripcion, int revision, int mostrar_nota) {
+        this.id = id;
+        this.idCargaAcad = idCargaAcad;
+        this.duracion = duracion;
+        this.cantIntento = cantIntento;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.revision = revision;
+        this.mostrar_nota = mostrar_nota;
+    }
+
     //constructor sin id
     //TODO: pendiente en ver si es necesario este metodo
     public Evaluacion(int idCargaAcad, int duracion, int cantIntento,
@@ -32,6 +45,22 @@ public class Evaluacion {
         this.cantIntento = cantIntento;
         this.nombre = nombre;
         this.descripcion = descripcion;
+    }
+
+    public int getRevision() {
+        return revision;
+    }
+
+    public void setRevision(int revision) {
+        this.revision = revision;
+    }
+
+    public int getMostrar_nota() {
+        return mostrar_nota;
+    }
+
+    public void setMostrar_nota(int mostrar_nota) {
+        this.mostrar_nota = mostrar_nota;
     }
 
     public int getId() {

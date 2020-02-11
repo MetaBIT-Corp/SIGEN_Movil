@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.crud_encuesta.Componentes_AP.Models.Turno;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
+import com.example.crud_encuesta.Componentes_MR.Docente.Docente;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.Estudiante;
 import com.example.crud_encuesta.DatabaseAccess;
 
@@ -108,7 +109,7 @@ public class DAOUsuario {
     }
 
     //provisional, este metodo lo que hace es verificar que
-    //si hay un estudiante en sesion, que lo saque, antes de hacer el login
+    //si hay un usuario en sesion, que lo saque, antes de hacer el login
     public void provisional(){
         baseDeDatos = this.dba.open();
         Cursor cursor = baseDeDatos.rawQuery(
@@ -178,6 +179,11 @@ public class DAOUsuario {
         return (baseDeDatos.delete("ESTUDIANTE  ",null,null)>0);
     }
 
+    public Boolean DeleteDocenteAll(){
+        baseDeDatos = this.dba.open();
+        return (baseDeDatos.delete("PDG_DCN_DOCENTE",null,null)>0);
+    }
+
     public Boolean DeleteSesionAll(){
         baseDeDatos = this.dba.open();
         return (baseDeDatos.delete("SESIONUSUARIO",null,null)>0);
@@ -196,5 +202,21 @@ public class DAOUsuario {
         contenedor.put("ANIO_INGRESO", estd.getAnio_ingreso());
         contenedor.put("IDUSUARIO",estd.getId_usuario());
         return (baseDeDatos.insert("ESTUDIANTE", null, contenedor))>0;
+    }
+
+    public boolean insertar(Docente dcn){
+        ContentValues contenedor = new ContentValues();
+        contenedor.put("ID_PDG_DCN", dcn.getId());
+        contenedor.put("ID_ESCUELA", 1);
+        contenedor.put("CARNET_DCN", dcn.getCarnet());
+        contenedor.put("ACTIVO", dcn.getActivo());
+        contenedor.put("ANIO_TITULO", dcn.getAnio_titulo());
+        contenedor.put("TIPOJORNADA", dcn.getTipo_jornada());
+        contenedor.put("DESCRIPCIONDOCENTE", dcn.getDescripcion());
+        contenedor.put("ID_CARGO_ACTUAL", dcn.getCargo_actual());
+        contenedor.put("ID_SEGUNDO_CARGO", dcn.getCargo_secundario());
+        contenedor.put("NOMBRE_DOCENTE", dcn.getNombre());
+        contenedor.put("IDUSUARIO", dcn.getId_usuario());
+        return (baseDeDatos.insert("PDG_DCN_DOCENTE", null, contenedor))>0;
     }
 }

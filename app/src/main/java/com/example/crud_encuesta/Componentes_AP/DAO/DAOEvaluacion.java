@@ -56,6 +56,8 @@ public class DAOEvaluacion {
         contentValues.put("INTENTO",evaluacion.getCantIntento());
         contentValues.put("NOMBRE_EVALUACION",evaluacion.getNombre());
         contentValues.put("DESCRIPCION_EVALUACION",evaluacion.getDescripcion());
+        contentValues.put("REVISION",evaluacion.getRevision());
+        contentValues.put("MOSTRAR_NOTA",evaluacion.getMostrar_nota());
 
         return (baseDeDatos.insert("EVALUACION",null,contentValues)>0);
     }
