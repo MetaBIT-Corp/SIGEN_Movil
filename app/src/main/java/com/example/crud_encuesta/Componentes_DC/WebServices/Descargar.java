@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,11 +32,13 @@ public class Descargar {
     private SQLiteDatabase cx;
     private DatabaseAccess dba;
     private ProgressDialog progressDialog;
-    private String url_base = "http://sigen.herokuapp.com/api";
+    //private String url_base = "http://sigen.herokuapp.com/api";
+    private Dominio dominio;
 
     public Descargar(Context context){
         this.context = context;
         dba = DatabaseAccess.getInstance(context);
+        dominio = Dominio.getInstance(context);
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Descargando...");
     }
@@ -55,7 +58,7 @@ public class Descargar {
         JsonObjectRequest jsonObjectRequest;
 
         request = Volley.newRequestQueue(context);
-        String url = url_base + "/evaluacion/turno/" + turno_id + "/obtener/" +estudiante_id;
+        String url = dominio.getDominio() + "/api/evaluacion/turno/" + turno_id + "/obtener/" +estudiante_id;
         System.out.println(url);
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -217,7 +220,7 @@ public class Descargar {
         JsonObjectRequest jsonObjectRequest;
 
         request = Volley.newRequestQueue(context);
-        String url = url_base + "/encuesta/" + encuesta_id + "/" + address;
+        String url = dominio.getDominio() + "/api/encuesta/" + encuesta_id + "/" + address;
 
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

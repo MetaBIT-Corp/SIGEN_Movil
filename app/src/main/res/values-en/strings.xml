@@ -199,6 +199,8 @@
     <string name="agregar_opc">Add option</string>
     <string name="nueva_preg">New Question</string>
     <string name="agregar_preg">Add question</string>
+    <string name="opc_dominio">Domain configuration</string>
+
     <!-- END DC -->
 
     <!-- Estudiante -->

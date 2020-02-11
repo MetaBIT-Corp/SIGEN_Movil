@@ -33,7 +33,6 @@ import com.example.crud_encuesta.Componentes_MT.Intento.IntentoActivity;
 import com.example.crud_encuesta.Componentes_EL.Carrera.CarreraActivity;
 import com.example.crud_encuesta.Componentes_AP.Activities.LoginActivity;
 
-import com.example.crud_encuesta.Componentes_EL.Encuesta.EncuestaActivity;
 import com.example.crud_encuesta.Componentes_EL.Escuela.EscuelaActivity;
 import com.example.crud_encuesta.Componentes_EL.Materia.MateriaActivity;
 

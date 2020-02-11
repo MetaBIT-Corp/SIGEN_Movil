@@ -82,6 +82,16 @@
                     android:layout_marginTop="25dp"
                     />
 
+                <Button
+                    android:id="@+id/btn_config_dominio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Configurar dominio"
+                    android:textStyle="bold"
+                    android:theme="@style/btn_dark"
+                    android:layout_marginTop="15dp"
+                    />
+
                 <TextView
                     android:id="@+id/copyright"
                     android:layout_width="wrap_content"
