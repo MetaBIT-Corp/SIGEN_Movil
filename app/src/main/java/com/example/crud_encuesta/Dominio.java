@@ -39,7 +39,7 @@ public class Dominio {
 
         }
 
-        dba.close();
+        //dba.close();
 
         return dominio;
     }

@@ -256,11 +256,8 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     }
 
     public void accesoAWebService(String email, String pass){
-<<<<<<< HEAD
-        String url = "http://192.168.0.17:8000/api/user/acceso/"+email+"/"+pass;
-=======
+        //String url = "http://192.168.0.17:8000/api/user/acceso/"+email+"/"+pass;
         String url = UrlBase + "api/user/acceso/"+email+"/"+pass;
->>>>>>> 826e5678ad528c61c255d29e22c5de09ae6ce8f2
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

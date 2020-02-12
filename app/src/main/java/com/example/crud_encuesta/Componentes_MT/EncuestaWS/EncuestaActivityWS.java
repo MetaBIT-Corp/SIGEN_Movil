@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.R;
 
 import org.json.JSONArray;
@@ -40,6 +41,8 @@ public class EncuestaActivityWS extends AppCompatActivity implements Response.Li
     DAOEncuestaWS daoEncuestaWS;
     ListView listView;
     ImageView sync;
+
+    private Dominio dominio = Dominio.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,7 @@ public class EncuestaActivityWS extends AppCompatActivity implements Response.Li
     @Override
     public void onErrorResponse(VolleyError error) {
         progressDialog.cancel();
-        Toast.makeText(this, "Prueba tu conexión a internet e intentalo nuevament", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Prueba tu conexión a internet e intentalo nuevamente", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -112,7 +115,7 @@ public class EncuestaActivityWS extends AppCompatActivity implements Response.Li
     }
 
     public void getEncuestasVigentes(){
-        String url = "http://sigen.herokuapp.com/api/encuestas-disponibles";
+        String url = dominio.getDominio() +"/api/encuestas-disponibles";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
         requestQueue.add(jsonObjectRequest);

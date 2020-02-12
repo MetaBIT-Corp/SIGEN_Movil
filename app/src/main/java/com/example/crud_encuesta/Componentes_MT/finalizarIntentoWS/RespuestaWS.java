@@ -3,12 +3,14 @@ package com.example.crud_encuesta.Componentes_MT.finalizarIntentoWS;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.crud_encuesta.Dominio;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class RespuestaWS {
     String texto_respuesta ="";
     int es_encuesta;
     int es_rc;
-    private String URLline = "http://sigen.herokuapp.com/api/finalizar-intento";
+    private Dominio dominio;
 
     public RespuestaWS(Context context, int opcion_id, int pregunta_id, int intento_id, int total_preguntas, String texto_respuesta, int es_encuesta, int es_rc){
         this.context = context;
@@ -33,13 +35,14 @@ public class RespuestaWS {
         this.texto_respuesta = texto_respuesta;
         this.es_encuesta = es_encuesta;
         this.es_rc = es_rc;
+        dominio = Dominio.getInstance(context);
 
         respuesta();
     }
 
     private void respuesta(){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URLline,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, dominio.getDominio()+"/api/finalizar-intento",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -71,6 +74,7 @@ public class RespuestaWS {
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(20000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 }
