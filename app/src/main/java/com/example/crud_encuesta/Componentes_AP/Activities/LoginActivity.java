@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         try {
             Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
             return p.waitFor() == 0;
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
             return false;
         }
