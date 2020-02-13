@@ -1,5 +1,6 @@
 package com.example.crud_encuesta.Componentes_AP.Activities;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,6 +26,7 @@ import com.example.crud_encuesta.Componentes_MR.Docente.Docente;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.Estudiante;
 import com.example.crud_encuesta.Componentes_MT.EncuestaWS.EncuestaActivityWS;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.MainActivity;
 import com.example.crud_encuesta.R;
 
@@ -42,17 +45,20 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     DAOUsuario daoUsuario;
     Usuario user;
     ProgressDialog progressDialog;
+    private Button configDom;
+    private Dominio dominio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         daoUsuario = new DAOUsuario(this);
-
+        dominio = Dominio.getInstance(this);
         //enlazamos con el layout
         tvUsuario = (TextInputLayout) findViewById(R.id.ap_tiluser);
         tvPass = (TextInputLayout) findViewById(R.id.ap_tilpass);
         Button login = (Button) findViewById(R.id.ap_bt_login);
+        configDom = (Button) findViewById(R.id.btn_config_dominio);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -101,7 +107,66 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         });
 
 
+        configDom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(v.getContext());
+                dialog.setTitle("Configuración de dominio");
+                dialog.setCancelable(true);
+
+                dialog.setContentView(R.layout.dialogo_dominio);
+
+                dialog.show();
+
+                final EditText texto_name = (EditText)dialog.findViewById(R.id.editt_name);
+                final EditText texto_port = (EditText)dialog.findViewById(R.id.editt_port);
+                Button boton_guardar = (Button)dialog.findViewById(R.id.btn_guardar);
+                final Button boton_cancelar = (Button)dialog.findViewById(R.id.btn_cancelar);
+                texto_name.setText(dominio.getName());
+                texto_port.setText("" + dominio.getPort());
+
+                boton_cancelar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                boton_guardar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = texto_name.getText().toString();
+
+                        if(!name.equals(""))
+                            dominio.setName(name);
+                        else{
+                            Toast.makeText(v.getContext(), "El campo de dominio no puede quedar vacío.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        String port = texto_port.getText().toString();
+
+                        if(!port.equals("") && !port.equals("0")){
+                            try{
+                                dominio.setPort(Integer.parseInt(port));
+                            }catch (Exception e){
+                                Toast.makeText(v.getContext(), "El puerto debe ser un valor númerico positivo", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }else{
+                            Toast.makeText(v.getContext(), "El campo de puerto no puede quedar vacío", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        Toast.makeText(v.getContext(), "Se han guardado los cambios en la configuración del dominio (" + dominio.getDominio() + ")", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
     }
+
+
 
     @Override
     public void onErrorResponse(VolleyError error) {
@@ -191,6 +256,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
     }
 
     public void accesoAWebService(String email, String pass){
+        //String url = "http://192.168.0.17:8000/api/user/acceso/"+email+"/"+pass;
         String url = UrlBase + "api/user/acceso/"+email+"/"+pass;
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,

@@ -550,6 +550,7 @@ public class IntentoActivity extends AppCompatActivity {
     }
 
     public void finalizar(){
+
         AlertDialog.Builder emergente = new AlertDialog.Builder(this);
         emergente.setTitle(R.string.mt_finalizar);
         emergente.setCancelable(false);
@@ -570,19 +571,43 @@ public class IntentoActivity extends AppCompatActivity {
 
                 AlertDialog.Builder nota = new AlertDialog.Builder(IntentoActivity.this);
                 if(id_encuesta==0){
-                    nota.setTitle("Evaluación finalizada");
-                    nota.setCancelable(false);
-                    nota.setMessage("Nota: " + calcular_nota());
-                    nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
-                            i.putExtra("id_estudiante", id_estudiante);
-                            i.putExtra("nota", calcular_nota());
-                            startActivity(i);
-                            finish();
-                        }
-                    });
+
+                    if(mostrarRevision(id_turno)){
+                        nota.setTitle("Evaluación finalizada");
+                        nota.setCancelable(false);
+                        nota.setMessage("Nota: " + calcular_nota());
+                        nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
+                                i.putExtra("id_estudiante", id_estudiante);
+                                i.putExtra("nota", calcular_nota());
+                                startActivity(i);
+                                finish();
+                            }
+                        });
+                    }else if(mostrarNota(id_turno)){
+                        nota.setTitle("Evaluación finalizada");
+                        nota.setCancelable(false);
+                        nota.setMessage("Nota: " + calcular_nota());
+                        nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                    }else{
+                        nota.setTitle("Evaluación finalizada");
+                        nota.setCancelable(false);
+                        nota.setMessage("Sus respuestas están siendo almacenadas");
+                        nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                    }
+
                     nota.show();
                 }else{
                     //nota.setTitle("Gracias por participar");
@@ -659,6 +684,50 @@ public class IntentoActivity extends AppCompatActivity {
         }
 
         return id_encuestado;
+    }
+
+    public boolean mostrarNota(int id){
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        SQLiteDatabase db = databaseAccess.open();
+        boolean mostrar=false;
+
+
+        try{
+            Cursor cursor = db.rawQuery("SELECT MOSTRAR_NOTA FROM EVALUACION WHERE ID_EVALUACION IN\n" +
+                    "(SELECT ID_EVALUACION FROM TURNO WHERE ID_TURNO ="+id+")", null);
+
+            if(cursor.moveToNext()){
+                if(cursor.getInt(0)==1){
+                    mostrar = true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return mostrar;
+    }
+
+    public boolean mostrarRevision(int id){
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        SQLiteDatabase db = databaseAccess.open();
+        boolean mostrar=false;
+
+
+        try{
+            Cursor cursor = db.rawQuery("SELECT REVISION FROM EVALUACION WHERE ID_EVALUACION IN\n" +
+                    "(SELECT ID_EVALUACION FROM TURNO WHERE ID_TURNO ="+id+")", null);
+
+            if(cursor.moveToNext()){
+                if(cursor.getInt(0)==1){
+                    mostrar = true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return mostrar;
     }
 
 

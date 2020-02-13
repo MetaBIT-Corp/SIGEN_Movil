@@ -200,6 +200,8 @@
     <string name="agregar_opc">Agregar opción</string>
     <string name="nueva_preg">Nueva Pregunta</string>
     <string name="agregar_preg">Agregar pregunta</string>
+    <string name="opc_dominio">Configuración de dominio</string>
+    
     <!-- END DC -->
 
     <!-- Estudiante -->

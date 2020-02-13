@@ -17,7 +17,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
+import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,13 +34,17 @@ public class Descargar {
     private SQLiteDatabase cx;
     private DatabaseAccess dba;
     private ProgressDialog progressDialog;
-    private String url_base = "http://sigen.herokuapp.com/api";
+    private DAOUsuario daoUsuario;
+    //private String url_base = "http://sigen.herokuapp.com/api";
+    private Dominio dominio;
 
     public Descargar(Context context){
         this.context = context;
         dba = DatabaseAccess.getInstance(context);
+        dominio = Dominio.getInstance(context);
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Descargando...");
+        daoUsuario = new DAOUsuario(context);
     }
 
     public void descargar_turno(int turno_id, int estudiante_id){
@@ -55,7 +62,7 @@ public class Descargar {
         JsonObjectRequest jsonObjectRequest;
 
         request = Volley.newRequestQueue(context);
-        String url = url_base + "/evaluacion/turno/" + turno_id + "/obtener/" +estudiante_id;
+        String url = dominio.getDominio() + "/api/evaluacion/turno/" + turno_id + "/obtener/" +estudiante_id;
         System.out.println(url);
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -206,9 +213,9 @@ public class Descargar {
             return;
         }
 
-        WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = manager.getConnectionInfo();
-        String address = info.getMacAddress();
+        //Obtener usuario loggeado
+        Usuario usuario = daoUsuario.getUsuarioLogueado();
+
 
         progressDialog.show();
         cx = dba.open();
@@ -217,7 +224,7 @@ public class Descargar {
         JsonObjectRequest jsonObjectRequest;
 
         request = Volley.newRequestQueue(context);
-        String url = url_base + "/encuesta/" + encuesta_id + "/" + address;
+        String url = dominio.getDominio() + "/api/encuesta/" + encuesta_id + "/" + usuario.getIDUSUARIO();
 
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -249,7 +256,7 @@ public class Descargar {
                     cx.insert("CLAVE",null,contenedor_clave);
 
                     //Se procede a obtener el encuestado y almacenarlo
-                    JSONObject encuestado = response.getJSONObject("encuestado");
+                    /*JSONObject encuestado = response.getJSONObject("encuestado");
 
                     //Primero vamos a verificar que el Encuestado no exista, antes de intentar ingresarlo
                     Cursor c = cx.rawQuery("SELECT * FROM ENCUESTADO WHERE ID_ENCUESTADO="+encuestado.getInt("id"), null, null);
@@ -262,14 +269,14 @@ public class Descargar {
 
                         cx.insert("ENCUESTADO",null,contenedor_encuestado);
 
-                    }
+                    }*/
 
                     //Se procede a obtener el intento y almacenarlo
                     JSONObject intento = response.getJSONObject("intento");
 
                     ContentValues contenedor_intento = new ContentValues();
                     contenedor_intento.put("ID_INTENTO", intento.getInt("id"));
-                    contenedor_intento.put("ID_ENCUESTADO", intento.getInt("encuestado_id"));
+                    contenedor_intento.put("ID_USUARIO", intento.getInt("user_id"));
                     contenedor_intento.put("ID_CLAVE", intento.getInt("clave_id"));
                     contenedor_intento.put("FECHA_INICIO_INTENTO", intento.getString("fecha_inicio_intento"));
 
