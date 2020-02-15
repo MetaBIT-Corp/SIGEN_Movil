@@ -279,7 +279,7 @@
     <!-- END Validaciones -->
     <string name="estadistica">No Data.</string>
     <string name="txesta">Statistics</string>
-    <string name="txesta_eva">Statistics of Evaluations</string>
+    <string name="txesta_eva">Statistics of Evaluation </string>
 
     <string-array name="fruits_array">
         <item>Apples</item>

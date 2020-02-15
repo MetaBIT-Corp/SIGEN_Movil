@@ -26,11 +26,11 @@ public class SubMenuMateriaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sub_menu_materia);
 
         CardView cardView=findViewById(R.id.cardArea);
-        CardView cardView1=findViewById(R.id.cardEstadistica);
+        //CardView cardView1=findViewById(R.id.cardEstadistica);
 
         ImageView btnArea=findViewById(R.id.btnArea);
         ImageView btnEva=findViewById(R.id.btnEva);
-        ImageView btnEsta=findViewById(R.id.btnEsta);
+        //ImageView btnEsta=findViewById(R.id.btnEsta);
         TextView tx=findViewById(R.id.el_lbl_Mat);
 
         //Recuperacion de valores
@@ -43,7 +43,7 @@ public class SubMenuMateriaActivity extends AppCompatActivity {
 
         if (rol==2){
             cardView.setVisibility(View.GONE);
-            cardView1.setVisibility(View.GONE);
+            //cardView1.setVisibility(View.GONE);
         }
 
         btnArea.setOnClickListener(new View.OnClickListener() {
@@ -59,15 +59,6 @@ public class SubMenuMateriaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(SubMenuMateriaActivity.this, EvaluacionActivity.class);
-                i.putExtra("id_materia",idMat);
-                startActivity(i);
-            }
-        });
-
-        btnEsta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(SubMenuMateriaActivity.this, EstadisticaActivity.class);
                 i.putExtra("id_materia",idMat);
                 startActivity(i);
             }

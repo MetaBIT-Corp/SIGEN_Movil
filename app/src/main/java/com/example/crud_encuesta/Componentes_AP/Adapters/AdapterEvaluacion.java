@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.crud_encuesta.Componentes_AP.DAO.DAOEvaluacion;
 import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
 import com.example.crud_encuesta.Componentes_AP.Models.Evaluacion;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
+import com.example.crud_encuesta.Estadisticas.EstadisticaActivity;
 import com.example.crud_encuesta.R;
 
 import java.util.ArrayList;
@@ -86,7 +88,7 @@ public class AdapterEvaluacion extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         //retorna el view de una fila x del listview
         View view = convertView;
         if (view == null) {
@@ -99,32 +101,50 @@ public class AdapterEvaluacion extends BaseAdapter {
 
 
         TextView tv_item = (TextView) view.findViewById(R.id.ap_tv_item);
-        ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
-        ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);
+        /*ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
+        ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);*/
         ImageView info = (ImageView) view.findViewById(R.id.ap_info_item);
         ImageView turnoi = (ImageView) view.findViewById(R.id.ap_turno_item);
         ImageView descargar = (ImageView) view.findViewById(R.id.btn_descargar);
         descargar.setVisibility(View.INVISIBLE);
         tv_item.setText(evaluacion.getNombre());
 
+
+
+        //Declaracion de boton para GRAFICOS By Ricardo Estupinian
+        Button graficos= view.findViewById(R.id.btn_grafico);
+
+        graficos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(activity, EstadisticaActivity.class);
+                i.putExtra("id_eva",evaluaciones.get(position).getId());
+                i.putExtra("nom_eva",evaluaciones.get(position).getNombre());
+                context.startActivity(i);
+            }
+        });
+
+
+
         //ocultados de acuerdo a rol
         DAOUsuario daoUsuario = new DAOUsuario(context);
         Usuario usuario = daoUsuario.getUsuarioLogueado();
         if(usuario.getROL()== 0 || usuario.getROL()==2){
-            editar.setVisibility(View.INVISIBLE);
-            eliminar.setVisibility(View.INVISIBLE);
+            /*editar.setVisibility(View.INVISIBLE);
+            eliminar.setVisibility(View.INVISIBLE);*/
             turnoi.setVisibility(View.INVISIBLE);
+            graficos.setVisibility(View.INVISIBLE);
         }
 
         //utilizamos setTag para que al presionar editar o eliminar, android sepa cuál registro queremos afectar
-        editar.setTag(position);
-        eliminar.setTag(position);
+        //editar.setTag(position);
+        //eliminar.setTag(position);
         info.setTag(position);
         turnoi.setVisibility(View.INVISIBLE);
 
         //TODO: OnCLICKLISTENER DE OPCIONES DE USUARIOS
 
-        editar.setOnClickListener(new View.OnClickListener() {
+        /*editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -169,7 +189,7 @@ public class AdapterEvaluacion extends BaseAdapter {
                     retroceso.setChecked(true);
                 } else {
                     retroceso.setChecked(false);
-                }*/
+                }
 
                 //programamos botones de crear-guardar y cancelar
 
@@ -177,10 +197,10 @@ public class AdapterEvaluacion extends BaseAdapter {
 
                     @Override
                     public void onClick(View v) {
-                        /*int retro = 0;
+                        int retro = 0;
                         if (retroceso.isChecked()) {
                             retro = 1;
-                        }*/
+                        }
                         if (!duracion.getText().toString().isEmpty() && !intento.getText().toString().isEmpty()
                                 && !nombre.getText().toString().isEmpty()) {
                             try {
@@ -271,7 +291,7 @@ public class AdapterEvaluacion extends BaseAdapter {
 
 
             }
-        });
+        });*/
         //final de eliminar
 
         info.setOnClickListener(new View.OnClickListener() {

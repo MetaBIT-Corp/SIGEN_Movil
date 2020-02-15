@@ -95,16 +95,16 @@ public class AdapterPensum  extends BaseAdapter {
 
 
         TextView tv_item = (TextView) view.findViewById(R.id.ap_tv_item);
-        ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
-        ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);
+        /*ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
+        ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);*/
         ImageView info = (ImageView) view.findViewById(R.id.ap_info_item);
         ImageView addMateriaItem = (ImageView) view.findViewById(R.id.ap_turno_item);
 
         tv_item.setText(daoPensum.getNombreCarrera(pensum) + " - " +pensum.getAnio());
 
         //utilizamos setTag para que al presionar editar o eliminar, android sepa cuál registro queremos afectar
-        editar.setTag(position);
-        eliminar.setTag(position);
+        /*editar.setTag(position);
+        eliminar.setTag(position);*/
 
         //ocultamos
         info.setVisibility(view.INVISIBLE);
@@ -113,7 +113,7 @@ public class AdapterPensum  extends BaseAdapter {
         //LISTENERS
 
         //INICIO de listeners Editar
-        editar.setOnClickListener(new View.OnClickListener() {
+        /*editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -143,7 +143,7 @@ public class AdapterPensum  extends BaseAdapter {
                 titulo.setText(v.getResources().getString(R.string.mt_editar));
                 anio.setText(""+pensum.getAnio());
 
-                Funciones.setBtnAnio(dialog,btnAnio,anio); /*Seteando valor a vista de Año Título.*/
+                Funciones.setBtnAnio(dialog,btnAnio,anio); Seteando valor a vista de Año Título.
 
                 //llenamos el spinner
                 ArrayAdapter<CharSequence> adaptadorSpinner = new ArrayAdapter(
@@ -189,12 +189,12 @@ public class AdapterPensum  extends BaseAdapter {
 
                                 );
                                 //creamos registro
-                                /*
+
                                 if (daoPensum.Editar(pensum)){
                                     Toast.makeText(v.getContext(),"Se guardó con éxito",Toast.LENGTH_SHORT).show();
                                 }else {
                                     Toast.makeText(v.getContext(),"Fallo al guardar, intente de nuevo",Toast.LENGTH_SHORT).show();
-                                }*/
+                                }
                                 daoPensum.Editar(pensum);
                                 //refrescamos la lista
                                 pensums = daoPensum.verTodos();
@@ -267,7 +267,7 @@ public class AdapterPensum  extends BaseAdapter {
                 delete_emergente.show(); //mostrar alerta
 
             }
-        });
+        });*/
         //FINAL de listener eliminar
 
 

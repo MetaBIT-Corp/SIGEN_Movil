@@ -112,16 +112,16 @@ public class AdapterPensumMateria extends BaseAdapter {
 
 
         TextView tv_item = (TextView) view.findViewById(R.id.ap_tv_item);
-        ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
-        ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);
+        //ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
+        //ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);
         ImageView info = (ImageView) view.findViewById(R.id.ap_info_item);
         ImageView addMateriaItem = (ImageView) view.findViewById(R.id.ap_turno_item);
 
         tv_item.setText(daoPensumMateria.getNombreMateria(pensumMateria));
 
         //utilizamos setTag para que al presionar eliminar, android sepa cuál registro queremos afectar
-        eliminar.setTag(position);
-        editar.setTag(position);
+        /*eliminar.setTag(position);
+        editar.setTag(position);*/
 
         //ocultamos
         info.setVisibility(view.INVISIBLE);
@@ -129,7 +129,7 @@ public class AdapterPensumMateria extends BaseAdapter {
 
         //LISTENERS
 
-        editar.setOnClickListener(new View.OnClickListener() {
+        /*editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //recuperamos la posicion del registro
@@ -199,12 +199,12 @@ public class AdapterPensumMateria extends BaseAdapter {
                                         getIdPensum()
                                 );
                                 //creamos registro
-                                /*
+
                                 if (daoPensumMateria.Editar(pensumMateria)){
                                     Toast.makeText(v.getContext(),"Se guardó con éxito",Toast.LENGTH_SHORT).show();
                                 }else {
                                     Toast.makeText(v.getContext(),"Fallo al guardar, intente de nuevo",Toast.LENGTH_SHORT).show();
-                                }*/
+                                }
                                 daoPensumMateria.Editar(pensumMateria);
                                 //refrescamos la lista
                                 pensumMaterias = daoPensumMateria.verTodos(getIdPensum());
@@ -273,7 +273,7 @@ public class AdapterPensumMateria extends BaseAdapter {
                 });
                 delete_emergente.show(); //mostrar alerta
             }
-        });
+        });*/
 
         return view;
     }
