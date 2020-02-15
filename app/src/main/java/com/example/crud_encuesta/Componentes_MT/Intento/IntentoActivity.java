@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
+import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_MT.finalizarIntentoWS.RespuestaWS;
 import com.example.crud_encuesta.DatabaseAccess;
 import com.example.crud_encuesta.R;
@@ -47,7 +49,7 @@ public class IntentoActivity extends AppCompatActivity {
     private int id_turno;
     private int id_encuesta;
     private int id_estudiante;
-    private int id_encuestado;
+    private int id_usuario;
     private int es_encuesta;
     int indice =0;
     boolean acceso_internet;
@@ -62,6 +64,8 @@ public class IntentoActivity extends AppCompatActivity {
     private ArrayList<ArrayList<Spinner>> preguntasSP = new ArrayList<ArrayList<Spinner>>();
     private ArrayList<ArrayList<Integer>> idsSp = new ArrayList<ArrayList<Integer>>();
 
+    DAOUsuario daoUsuario = new DAOUsuario(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +75,12 @@ public class IntentoActivity extends AppCompatActivity {
         id_turno = getIntent().getIntExtra("id_turno_intento", 0);
         id_encuesta = getIntent().getIntExtra("id_encuesta", 0);
         id_estudiante = getIntent().getIntExtra("id_estudiante", 0);
-        id_encuestado = id_encuestado();
+        id_usuario = daoUsuario.getUsuarioLogueado().getIDUSUARIO();
         ll_principal = findViewById(R.id.llPrincipal);
 
         preguntas= getPreguntas();
 
-        id_intento = id_intento(id_estudiante, id_encuestado);
+        id_intento = id_intento(id_estudiante, id_usuario);
         if(primerIntento(id_estudiante, id_turno) && id_encuesta==0){
             iniciar_intento();
         }else{
@@ -285,7 +289,7 @@ public class IntentoActivity extends AppCompatActivity {
             ContentValues registro = new ContentValues();
             registro.put("id_est", id_estudiante);
             if(id_estudiante!=0) registro.put("id_clave", id_clave);
-            if(id_encuesta!=0) registro.put("id_encuestado", id_encuestado);
+            if(id_encuesta!=0) registro.put("id_usuario", id_usuario);
             registro.put("fecha_inicio_intento", fecha_actual());
             registro.put("numero_intento", IntentoConsultasDB.ultimo_intento(id_estudiante , db)+1);
 
@@ -619,7 +623,7 @@ public class IntentoActivity extends AppCompatActivity {
                             Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
                             i.putExtra("id_estudiante", id_estudiante);
                             i.putExtra("id_encuesta", id_encuesta);
-                            i.putExtra("id_encuestado", id_encuestado);
+                            i.putExtra("id_usuario", id_usuario);
                             startActivity(i);
                             finish();
                         }
@@ -669,23 +673,6 @@ public class IntentoActivity extends AppCompatActivity {
         return false;
     }
 
-    public int id_encuestado(){
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-        SQLiteDatabase db = databaseAccess.open();
-        int id_encuestado=0;
-
-        try{
-            Cursor cursor = db.rawQuery("SELECT ID_ENCUESTADO FROM ENCUESTADO ORDER BY ID_ENCUESTADO DESC LIMIT 1", null);
-            if(cursor.moveToFirst()){
-                id_encuestado = cursor.getInt(0);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return id_encuestado;
-    }
-
     public boolean mostrarNota(int id){
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         SQLiteDatabase db = databaseAccess.open();
@@ -732,5 +719,3 @@ public class IntentoActivity extends AppCompatActivity {
 
 
 }
-
-
