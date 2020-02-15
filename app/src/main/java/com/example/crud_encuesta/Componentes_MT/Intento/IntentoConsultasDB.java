@@ -113,7 +113,7 @@ public class IntentoConsultasDB {
 
         try{
             Cursor cursor = db.rawQuery("SELECT ID_INTENTO FROM INTENTO WHERE ID_EST="+id_usuario+
-                    " OR ID_ENCUESTADO ="+id_encuestado+" ORDER BY ID_INTENTO DESC LIMIT 1", null);
+                    " OR ID_USUARIO ="+id_encuestado+" ORDER BY ID_INTENTO DESC LIMIT 1", null);
 
             cursor.moveToFirst();
 

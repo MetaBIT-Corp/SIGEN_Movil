@@ -71,11 +71,11 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
 
                     if(preguntas.get(position).ides.get(i)==preguntas.get(position).eleccion){
                         rb_pregunta.setChecked(true);
-                        if(preguntas.get(position).eleccion==preguntas.get(position).respuesta){
-                            rb_pregunta.setTextColor(Color.GREEN);
+                        if(id_encuesta!=0){
+                            rb_pregunta.setTextColor(Color.BLUE);
                         }else{
-                            if(id_encuesta!=0){
-                                rb_pregunta.setTextColor(Color.BLUE);
+                            if(preguntas.get(position).eleccion==preguntas.get(position).respuesta){
+                                rb_pregunta.setTextColor(Color.GREEN);
                             }
                             else{
                                 rb_pregunta.setTextColor(Color.RED);
@@ -101,11 +101,11 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
 
                     if(preguntas.get(position).ides.get(i)==preguntas.get(position).eleccion){
                         rb_pregunta.setChecked(true);
-                        if(preguntas.get(position).eleccion==preguntas.get(position).respuesta){
-                            rb_pregunta.setTextColor(Color.GREEN);
+                        if(id_encuesta!=0){
+                            rb_pregunta.setTextColor(Color.BLUE);
                         }else{
-                            if(id_encuesta!=0){
-                                rb_pregunta.setTextColor(Color.BLUE);
+                            if(preguntas.get(position).eleccion==preguntas.get(position).respuesta){
+                                rb_pregunta.setTextColor(Color.GREEN);
                             }
                             else{
                                 rb_pregunta.setTextColor(Color.RED);
@@ -141,11 +141,11 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
                     if(idSP.get(i)==preguntas.get(position).eleccion){
                         spGPO.setSelection(i);
 
-                        if(idSP.get(i)==preguntas.get(position).respuesta){
-                            spGPO.setBackgroundColor(Color.GREEN);
+                        if(id_encuesta!=0){
+                            spGPO.setBackgroundColor(Color.BLUE);
                         }else{
-                            if(id_encuesta!=0){
-                                spGPO.setBackgroundColor(Color.BLUE);
+                            if(idSP.get(i)==preguntas.get(position).respuesta){
+                                spGPO.setBackgroundColor(Color.GREEN);
                             }else{
                                 spGPO.setBackgroundColor(Color.RED);
                             }
@@ -170,11 +170,11 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
 
                 et_respuesta.setText(""+preguntas.get(position).texto_eleccion);
 
-                if(respuesta.equals(preguntas.get(position).texto_eleccion)){
-                    et_respuesta.setTextColor(Color.GREEN);
+                if(id_encuesta!=0){
+                    et_respuesta.setTextColor(Color.BLUE);
                 }else{
-                    if(id_encuesta!=0){
-                        et_respuesta.setTextColor(Color.BLUE);
+                    if(respuesta.equals(preguntas.get(position).texto_eleccion)){
+                        et_respuesta.setTextColor(Color.GREEN);
                     }else{
                         et_respuesta.setTextColor(Color.RED);
                     }
