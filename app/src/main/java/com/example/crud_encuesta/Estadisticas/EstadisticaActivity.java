@@ -226,15 +226,22 @@ public class EstadisticaActivity extends AppCompatActivity implements Response.L
     @Override
     public void onResponse(JSONObject response) {
         try {
+            if(!response.has("info")){
+                int[] resultados=new int[]{
+                        response.getInt("porcentaje_aprobados"),
+                        response.getInt("porcentaje_reprobados"),
+                        response.getInt("porcentaje_no_evaluados"),
+                        response.getInt("porcentaje_evaluados")
+                };
 
-            int[] resultados=new int[]{
-                    response.getInt("porcentaje_aprobados"),
-                    response.getInt("porcentaje_reprobados"),
-                    response.getInt("porcentaje_no_evaluados"),
-                    response.getInt("porcentaje_evaluados")
-            };
-
-            drawGrafico(resultados);
+                drawGrafico(resultados);
+            }else{
+                if(response.getInt("info")==0){
+                    tx.setText(R.string.info0_estadistica);
+                }else{
+                    tx.setText(R.string.info1_estadistica);
+                }
+            }
             progressDialog.cancel();
 
         } catch (Exception e) {

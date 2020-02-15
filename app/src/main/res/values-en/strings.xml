@@ -281,6 +281,10 @@
     <string name="txesta">Statistics</string>
     <string name="txesta_eva">Statistics of Evaluation </string>
 
+
+    <string name="info0_estadistica">The period to resolve the evaluation is not over yet</string>
+    <string name="info1_estadistica">This evaluation has no turns</string>
+
     <string-array name="fruits_array">
         <item>Apples</item>
         <item>Apricots</item>
