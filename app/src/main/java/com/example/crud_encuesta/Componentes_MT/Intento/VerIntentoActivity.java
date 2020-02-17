@@ -18,9 +18,9 @@ import java.util.List;
 public class VerIntentoActivity extends AppCompatActivity {
     ListView listView;
     TextView txtTitle;
-    int id_usuario;
+    int id_estudiante;
     int id_encuesta;
-    int id_encuestado;
+    int id_usuario;
     List<Integer> idSP = new ArrayList<>();
     List<String> opcionSP = new ArrayList<>();
     double nota;
@@ -33,10 +33,10 @@ public class VerIntentoActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.lsVerPreguntas);
         txtTitle = findViewById(R.id.txtTitle);
 
-        id_usuario = getIntent().getIntExtra("id_estudiante", 0);
+        id_estudiante = getIntent().getIntExtra("id_estudiante", 0);
         nota = getIntent().getDoubleExtra("nota", 0);
         id_encuesta = getIntent().getIntExtra("id_encuesta", 0);
-        id_encuestado = getIntent().getIntExtra("id_encuestado", 0);
+        id_usuario = getIntent().getIntExtra("id_usuario", 0);
 
         if(id_encuesta==0) txtTitle.setText("Nota: "+nota);
         listView.setAdapter(new VerIntentoAdapter(getPreguntas(), id_encuesta, idSP, opcionSP, this, this));
@@ -59,7 +59,7 @@ public class VerIntentoActivity extends AppCompatActivity {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         SQLiteDatabase db = databaseAccess.open();
 
-        ultimo_intento = IntentoConsultasDB.id_ultimo_intento(id_usuario, id_encuestado, db);
+        ultimo_intento = IntentoConsultasDB.id_ultimo_intento(id_estudiante, id_usuario, db);
 
         String sentencia_pregunta = "SELECT * FROM PREGUNTA WHERE ID_PREGUNTA =";
 

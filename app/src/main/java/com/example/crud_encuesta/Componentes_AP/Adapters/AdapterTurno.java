@@ -109,8 +109,8 @@ public class AdapterTurno extends BaseAdapter {
         turno = turnos.get(position);
 
         TextView tv_item = (TextView) view.findViewById(R.id.ap_tv_item);
-        ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
-        ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);
+        //ImageView editar = (ImageView) view.findViewById(R.id.ap_editar_item);
+        //ImageView eliminar = (ImageView) view.findViewById(R.id.ap_eliminar_item);
         ImageView info = (ImageView) view.findViewById(R.id.ap_info_item);
         ImageView turnoi = (ImageView) view.findViewById(R.id.ap_turno_item);
         ImageView descargar = (ImageView) view.findViewById(R.id.btn_descargar);
@@ -123,20 +123,24 @@ public class AdapterTurno extends BaseAdapter {
 
         tv_item.setText("Turno " + (position + 1));
 
+        //Declaracion de boton para GRAFICOS By Ricardo Estupinian
+        Button graficos= view.findViewById(R.id.btn_grafico);
+        graficos.setVisibility(View.INVISIBLE);
+
 
         //ocultados de acuerdo a rol
         DAOUsuario daoUsuario = new DAOUsuario(context);
         Usuario usuario = daoUsuario.getUsuarioLogueado();
         if(usuario.getROL()== 0 || usuario.getROL()==2){
-            editar.setVisibility(View.INVISIBLE);
-            eliminar.setVisibility(View.INVISIBLE);
+           /* editar.setVisibility(View.INVISIBLE);
+            eliminar.setVisibility(View.INVISIBLE);*/
             turnoi.setVisibility(View.INVISIBLE);
             info.setVisibility(View.INVISIBLE);
         }
 
         //utilizamos setTag para que al presionar editar o eliminar, android sepa cuál registro queremos afectar
-        editar.setTag(position);
-        eliminar.setTag(position);
+        /*editar.setTag(position);
+        eliminar.setTag(position);*/
         info.setTag(position);
         turnoi.setTag(position);
 
@@ -155,7 +159,7 @@ public class AdapterTurno extends BaseAdapter {
 
         //TODO: OnCLICKLISTENER DE OPCIONES
         //inicio de listener editar
-        editar.setOnClickListener(new View.OnClickListener() {
+        /*editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //dialogo de editar
@@ -355,7 +359,7 @@ public class AdapterTurno extends BaseAdapter {
                 });
                 delete_emergente.show(); //mostrar alerta
             }
-        });
+        });*/
         //Final de listener eliminar
 
         //Inicio de listener info

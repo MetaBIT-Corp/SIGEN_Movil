@@ -282,13 +282,16 @@
 
     <string name="estadistica">No hay Datos.</string>
     <string name="txesta">Estadisticas</string>
-    <string name="txesta_eva">Estadisticas de Evaluaciones</string>
+    <string name="txesta_eva">Estadisticas de Evaluacion </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="encuesta">Encuesta</string>
     <string name="usuario_msm">Usuario</string>
+
+    <string name="info0_estadistica">El periodo para resolver la evaluación aún no ha terminado</string>
+    <string name="info1_estadistica"> Esta evaluación no tiene turnos</string>
 
     <string-array name="fruits_array">
         <item>Apples</item>

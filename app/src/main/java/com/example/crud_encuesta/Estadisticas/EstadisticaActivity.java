@@ -1,5 +1,7 @@
 package com.example.crud_encuesta.Estadisticas;
 
+import android.app.ProgressDialog;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -25,24 +36,54 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class EstadisticaActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.RequiresApi;
+
+public class EstadisticaActivity extends AppCompatActivity implements Response.Listener<JSONObject>,Response.ErrorListener{
     BarChart grafico;
     ListView info;
-    int idMat;
+    int idEva;
+    String nomEva;
+    private String url_base="";
+    private JsonObjectRequest jsonObjectRequest;
+    private RequestQueue requestQueue;
+    ProgressDialog progressDialog;
 
+    TextView tx;
+    TextView tx1;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_estadistica);
-        TextView tx=findViewById(R.id.txEstadistica);
-        TextView tx1=findViewById(R.id.txEstadistica2);
-        info=findViewById(R.id.listEstadistic);
+        /*---------ASIGNANDO VALOR A URL_BASE------------*/
+        url_base= Dominio.getInstance(this).getDominio()+"/api/";
 
+        requestQueue= Volley.newRequestQueue(this);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Cargando Grafico...");
+        progressDialog.show();
+
+        setContentView(R.layout.activity_estadistica);
+        info=findViewById(R.id.listEstadistic);
+        tx=findViewById(R.id.txEstadistica);
+        tx1=findViewById(R.id.txEstadistica2);
 
         grafico = findViewById(R.id.barras);
-        idMat=getIntent().getExtras().getInt("id_materia");
+        idEva=getIntent().getExtras().getInt("id_eva");
+        nomEva=getIntent().getExtras().getString("nom_eva");
+
+        tx1.setText(R.string.txesta_eva);
+        tx1.append(" "+nomEva);
+        tx1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         //Configuraciones previas
         grafico.setPinchZoom(false);//No permitir zoom con gesto
@@ -62,21 +103,20 @@ public class EstadisticaActivity extends AppCompatActivity {
             }
         });
 
-        String[] nomEvaluaciones = Consultas.parcialesMateria(idMat,this);
-        if (nomEvaluaciones!=null){
-            float[][] cantidad = new float[2][nomEvaluaciones.length];
+        //Se verifica si hay conexion al dominio
+        if (isInternetAvailable()){
+            //Llamada al WS
+            getEstadisticasWS(idEva);
+        }else{
+            progressDialog.cancel();
+            Toast.makeText(this,"Se requiere de conexion al dominio configurado.",Toast.LENGTH_SHORT).show();
+        }
+    }
 
-            //Llenando todos los aprobados de cada parcial
-            for (int c = 0; c < cantidad[0].length; c++) {
-                cantidad[0][c] = Consultas.aprobadosEvaluacion(nomEvaluaciones[c],this);
-            }
+    private void drawGrafico(int[] resultados){
+        if (resultados!=null){
+            ArrayList<IBarDataSet> barDataSets = barDataSets(resultados);
 
-            //Llenando todos los reprobados de cada parcial
-            for (int c = 0; c < cantidad[0].length; c++) {
-                cantidad[1][c] = Consultas.reprobadosEvaluacion(nomEvaluaciones[c],this);
-            }
-
-            ArrayList<IBarDataSet> barDataSets = barDataSets(cantidad);
             //Creando objeto BarData y asignandolo al grafico
             BarData barData = new BarData(barDataSets);
             barData.setBarWidth(0.8f);
@@ -89,13 +129,22 @@ public class EstadisticaActivity extends AppCompatActivity {
             ArrayList<LegendEntry> leyendas = new ArrayList<>();
             LegendEntry l1 = new LegendEntry("Aprobados", Legend.LegendForm.CIRCLE, 10f, 0.0f, null, ColorTemplate.COLORFUL_COLORS[0]);
             LegendEntry l2 = new LegendEntry("Reprobados", Legend.LegendForm.CIRCLE, 10f, 0.0f, null, ColorTemplate.COLORFUL_COLORS[1]);
+            LegendEntry l3 = new LegendEntry("No Evaluados", Legend.LegendForm.CIRCLE, 10f, 0.0f, null, ColorTemplate.COLORFUL_COLORS[2]);
+            LegendEntry l4 = new LegendEntry("Evaluados", Legend.LegendForm.CIRCLE, 10f, 0.0f, null, ColorTemplate.COLORFUL_COLORS[3]);
+
             leyendas.add(l1);
             leyendas.add(l2);
+            leyendas.add(l3);
+            leyendas.add(l4);
+
 
             //Setiando la leyenda si se comenta queda la leyenda del dataset
             legend.setCustom(leyendas);
-            legend.setXOffset(70);
-            legend.setYOffset(10);
+            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+            legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            legend.setDrawInside(true);
+            legend.setXEntrySpace(55);
 
 
             //Quitando la descripcion
@@ -105,21 +154,20 @@ public class EstadisticaActivity extends AppCompatActivity {
 
             //Configuraciones del Eje X
             XAxis xAxis = grafico.getXAxis();
-            xAxis.setValueFormatter(new XAxisValueFormatter(nomEvaluaciones));
+            xAxis.setValueFormatter(new XAxisValueFormatter(new String[]{"Aprobados","Reprobados","No Evaluados","Evaluados"}));
             xAxis.setPosition(XAxis.XAxisPosition.TOP);
-            xAxis.setLabelCount(nomEvaluaciones.length);
+            xAxis.setLabelCount(resultados.length);
             xAxis.setCenterAxisLabels(true);
             xAxis.setGranularity(1);
             xAxis.setGranularityEnabled(true);
             xAxis.setAxisMinimum(0);
-            xAxis.setAxisMaximum(nomEvaluaciones.length*2);
 
 
             //Ocualtando YAxisRigth
             YAxis yAxis = grafico.getAxisRight();
             yAxis.setEnabled(false);
             yAxis = grafico.getAxisLeft();
-            yAxis.setAxisMaximum(Consultas.cantidadInscritos(idMat,EstadisticaActivity.this));
+            yAxis.setAxisMaximum(110);
             yAxis.setGranularity(1);
             yAxis.setAxisMinimum(0);
 
@@ -128,65 +176,88 @@ public class EstadisticaActivity extends AppCompatActivity {
             grafico.setFitBars(true);//Centra las barras
             grafico.animateXY(2000, 2000);
             grafico.invalidate();
-
-            ArrayList<String> listainfor=new ArrayList<>();
-            for (int i=0;i<nomEvaluaciones.length;i++){
-                InformacionEstadistica info=new InformacionEstadistica(
-                        nomEvaluaciones[i],
-                        Math.round(cantidad[0][i]+cantidad[1][i])+"",
-                        Math.round(cantidad[1][i])+"",
-
-                        Math.round(cantidad[0][i])+"",
-                        Math.round(Consultas.cantidadInscritos(idMat,EstadisticaActivity.this))+"",
-                        Consultas.mayorNota(nomEvaluaciones[i],EstadisticaActivity.this)+""
-                );
-                listainfor.add(info.toString());
-            }
-
-
-            ArrayAdapter adapter=new ArrayAdapter(EstadisticaActivity.this,android.R.layout.simple_list_item_1,listainfor);
+            List<String> lista =new ArrayList<>();
+            lista.add("Aprobados: "+resultados[0]+"%");
+            lista.add("Reprobados: "+resultados[1]+"%");
+            lista.add("Evaluados: "+resultados[3]+"%");
+            lista.add("No evaluados: "+resultados[2]+"%");
+            ArrayAdapter adapter=new ArrayAdapter(EstadisticaActivity.this,android.R.layout.simple_list_item_1,lista);
             info.setAdapter(adapter);
-
-
         }else {
             grafico.setVisibility(View.GONE);
-            tx.setText(R.string.estadistica);
-            tx1.setVisibility(View.GONE);
         }
-
 
     }
 
-
-    private ArrayList<IBarDataSet> barDataSets(float[][] valores) {
+    private ArrayList<IBarDataSet> barDataSets(int[] valores) {
         ArrayList<BarEntry> barEntries;
         ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
-        /*Se recorre la matriz de valores segun parciales. La matriz luce asi
-                P1  P2  P3
-         Aprob  x   x   x
-         Reprob x   x   x
-
-         */
         float conta = 0.5f;
-        for (int c = 0; c < valores[0].length; c++) {
-            barEntries = new ArrayList<>();
-            BarEntry bar;
-            for (int f = 0; f < valores.length; f++) {
-                //Genera Barras de Aprobados y Reprobados
-                if (f%2==0){
-                    bar = new BarEntry(conta, valores[f][c],"Aprobados: "+valores[f][c]);
-                }else{
-                    bar = new BarEntry(conta, valores[f][c],"Reprobados: "+valores[f][c]);
-                }
+        barEntries = new ArrayList<>();
+        for (int c = 0; c < valores.length; c++) {
 
-                barEntries.add(bar);
-                conta++;
-            }
-            BarDataSet barDataSet = new BarDataSet(barEntries, c + "");
+            BarEntry bar;
+            bar = new BarEntry(conta, valores[c],valores[c]+"% de los estudiantes");
+            barEntries.add(bar);
+            conta++;
+        }
+            BarDataSet barDataSet = new BarDataSet(barEntries, "");
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
             barDataSets.add(barDataSet);
 
-        }
         return barDataSets;
+    }
+
+    private void getEstadisticasWS(int idEva){
+        String url=url_base+"estadistica/evaluacion/"+idEva;
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(8000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        tx.setText(R.string.estadistica);
+        Toast.makeText(EstadisticaActivity.this,"Error: "+error.toString(),Toast.LENGTH_SHORT).show();
+        Log.d("ERROR",error.toString());
+        progressDialog.cancel();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        try {
+            if(!response.has("info")){
+                int[] resultados=new int[]{
+                        response.getInt("porcentaje_aprobados"),
+                        response.getInt("porcentaje_reprobados"),
+                        response.getInt("porcentaje_no_evaluados"),
+                        response.getInt("porcentaje_evaluados")
+                };
+
+                drawGrafico(resultados);
+            }else{
+                if(response.getInt("info")==0){
+                    tx.setText(R.string.info0_estadistica);
+                }else{
+                    tx.setText(R.string.info1_estadistica);
+                }
+            }
+            progressDialog.cancel();
+
+        } catch (Exception e) {
+            Log.d("Error", e.toString());
+        }
+    }
+
+    //Funcion para verificar si hay conexion a internet
+    public boolean isInternetAvailable() {
+        try {
+            //Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 "+Dominio.getInstance(this).getName());
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 google.com");
+            return p.waitFor() == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

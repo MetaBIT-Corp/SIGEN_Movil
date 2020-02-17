@@ -22,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.crud_encuesta.Componentes_EL.EstructuraTablas;
 import com.example.crud_encuesta.Componentes_EL.Operaciones_CRUD;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.R;
 
 import org.json.JSONArray;
@@ -39,7 +40,7 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     ArrayList<Materia> listaMateria = new ArrayList<>();
     String url;
 
-    private String url_base = "http://sigen.herokuapp.com/api/";
+    private String url_base = "";
 
     private JsonArrayRequest jsonArrayRequest;
     private RequestQueue requestQueue;
@@ -49,6 +50,10 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*---------ASIGNANDO VALOR A URL_BASE------------*/
+        url_base= Dominio.getInstance(this).getDominio()+"/api/";
+
+
         access = DatabaseAccess.getInstance(MateriaUsersActivity.this);
         db = access.open();
         requestQueue= Volley.newRequestQueue(this);
@@ -71,7 +76,7 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
         if (! isInternetAvailable()){
             listaMateria=Operaciones_CRUD.todosMateria(db,rol,id);
             if(listaMateria.size()==0){
-                Toast.makeText(MateriaUsersActivity.this,"Necesitas internet para acceder a tur materias por primera vez.",Toast.LENGTH_LONG).show();
+                Toast.makeText(MateriaUsersActivity.this,"Necesitas internet para acceder a tus materias por primera vez.",Toast.LENGTH_LONG).show();
             }
             adapter=new MateriaUserAdapter(MateriaUsersActivity.this,listaMateria,db,this,id,rol);
             listView.setAdapter(adapter);
@@ -84,7 +89,7 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        //Toast.makeText(MateriaUsersActivity.this,"Error: "+error.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(MateriaUsersActivity.this,"Error: "+error.toString(),Toast.LENGTH_SHORT).show();
         Log.d("ERROR",error.toString());
         progressDialog.cancel();
     }
@@ -93,7 +98,6 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     public void onResponse(JSONArray response) {
         Materia materia;
         try {
-            System.out.println(response.toString());
             db.delete(EstructuraTablas.MATERIA_TABLA_NAME,null,null);
             db.delete("carga_academica",null,null);
             db.delete("materia_ciclo",null,null);
@@ -172,7 +176,8 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
     //Funcion para verificar si hay conexion a internet
     public boolean isInternetAvailable() {
         try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
+            //Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 "+Dominio.getInstance(this).getName());
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 google.com");
             return p.waitFor() == 0;
         } catch (Exception e) {
             e.printStackTrace();

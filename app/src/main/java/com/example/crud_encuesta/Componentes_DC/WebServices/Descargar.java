@@ -307,7 +307,7 @@ public class Descargar {
 
                         ContentValues contenedor_area = new ContentValues();
                         contenedor_area.put("ID_AREA", area.getInt("id"));
-                        contenedor_area.put("ID_CAT_MAT", area.getInt("id_cat_mat"));
+//                        contenedor_area.put("ID_CAT_MAT", area.getInt("id_cat_mat"));
                         contenedor_area.put("ID_PDG_DCN", area.getInt("id_pdg_dcn"));
                         contenedor_area.put("ID_TIPO_ITEM", area.getInt("tipo_item_id"));
                         contenedor_area.put("TITULO", area.getString("titulo"));

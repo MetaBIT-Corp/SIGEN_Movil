@@ -14,7 +14,7 @@ public class XAxisValueFormatter extends ValueFormatter {
     @Override
     public String getFormattedValue(float value) {
         for (int i = 0; i < values.length; i++) {
-            if (value == i * 2) {
+            if (value == i * 1) {
                 return values[i];
             }
         }
