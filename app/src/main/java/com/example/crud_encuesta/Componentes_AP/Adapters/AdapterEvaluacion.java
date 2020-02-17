@@ -3,6 +3,7 @@ package com.example.crud_encuesta.Componentes_AP.Adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,16 +19,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.crud_encuesta.Componentes_AP.DAO.DAOEvaluacion;
 import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
 import com.example.crud_encuesta.Componentes_AP.Models.Evaluacion;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.Estadisticas.EstadisticaActivity;
 import com.example.crud_encuesta.R;
 
 import java.util.ArrayList;
 
 public class AdapterEvaluacion extends BaseAdapter {
+
+
+
 
     ArrayList<Evaluacion> evaluaciones = new ArrayList<>();
     Evaluacion evaluacion;
@@ -106,7 +113,10 @@ public class AdapterEvaluacion extends BaseAdapter {
         ImageView info = (ImageView) view.findViewById(R.id.ap_info_item);
         ImageView turnoi = (ImageView) view.findViewById(R.id.ap_turno_item);
         ImageView descargar = (ImageView) view.findViewById(R.id.btn_descargar);
+        ImageView publicar = (ImageView) view.findViewById(R.id.ap_publicar_turno);
+
         descargar.setVisibility(View.INVISIBLE);
+        publicar.setVisibility(View.INVISIBLE);
         tv_item.setText(evaluacion.getNombre());
 
 
@@ -140,6 +150,8 @@ public class AdapterEvaluacion extends BaseAdapter {
         //editar.setTag(position);
         //eliminar.setTag(position);
         info.setTag(position);
+
+
         turnoi.setVisibility(View.INVISIBLE);
 
         //TODO: OnCLICKLISTENER DE OPCIONES DE USUARIOS

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,19 +24,33 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.crud_encuesta.Componentes_AP.DAO.DAOTurno;
 import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
 import com.example.crud_encuesta.Componentes_AP.Models.Turno;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_DC.WebServices.Descargar;
 import com.example.crud_encuesta.Componentes_MT.Clave.ClaveActivity;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.R;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AdapterTurno extends BaseAdapter {
     private int anio, mes, dia, hora, minuto;
+    RequestQueue requestQueue;
+    JsonObjectRequest jsonObjectRequest;
+
+    ProgressDialog progressDialog;
 
     private Descargar descargar_ws;
 
@@ -114,6 +129,7 @@ public class AdapterTurno extends BaseAdapter {
         ImageView info = (ImageView) view.findViewById(R.id.ap_info_item);
         ImageView turnoi = (ImageView) view.findViewById(R.id.ap_turno_item);
         ImageView descargar = (ImageView) view.findViewById(R.id.btn_descargar);
+        ImageView publicar = (ImageView) view.findViewById(R.id.ap_publicar_turno);
 
         String fechainicial = turno.getDateInicial();
         String[] pfechainicial = fechainicial.split(" ");
@@ -143,6 +159,38 @@ public class AdapterTurno extends BaseAdapter {
         eliminar.setTag(position);*/
         info.setTag(position);
         turnoi.setTag(position);
+        publicar.setTag(position);
+
+        publicar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*
+                 *
+                 * LOGICA DE WEBSERVICES
+                 *
+                 * */
+                //Si hay internet se va a realizar la consulta al ws
+                if(isInternetAvailable()){
+                    progress("Cargando...", view.getContext());
+                    Dominio dominio = Dominio.getInstance(view.getContext());
+                    String UrlBase = dominio.getDominio();
+
+                    //recuperamos la posicion del registro
+                    int pos = Integer.parseInt(view.getTag().toString());
+
+                    //recuperamos el registro de la lista y seteamos el id
+                    turno = turnos.get(pos);
+                    setIdTurno(turno.getId());
+                    publicarTurnoWS(turno.getId(),UrlBase,view.getContext());
+                }
+
+                /*
+                 *
+                 * LOGICA DE WEBSERVICES
+                 *
+                 * */
+            }
+        });
 
         descargar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -516,6 +564,52 @@ public class AdapterTurno extends BaseAdapter {
         }
 
         return  validado;
+    }
+
+
+    public boolean isInternetAvailable() {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
+            return p.waitFor() == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public void publicarTurnoWS(int id_turno, String UrlBase, final Context context) {
+        requestQueue = Volley.newRequestQueue(context);
+        String url = UrlBase + "/api/evaluaciones_m/publicar_turno/"+id_turno;
+        jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response.toString());
+                        try  {
+                            Toast.makeText(context, response.getString("resultado"), Toast.LENGTH_LONG).show();
+                            progressDialog.cancel();
+                        }catch(Exception e){
+                            Toast.makeText(context, "Error: por favor vuelve a ingresar",Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error: " + error,Toast.LENGTH_LONG).show();
+                    }
+                });
+        jsonObjectRequest.setRetryPolicy( new DefaultRetryPolicy(10000,1,1));
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void progress(String mensaje, Context context){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(mensaje);
+        progressDialog.show();
     }
 
 }

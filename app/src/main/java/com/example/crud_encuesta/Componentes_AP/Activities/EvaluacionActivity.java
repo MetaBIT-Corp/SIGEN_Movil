@@ -40,6 +40,7 @@ import com.example.crud_encuesta.Componentes_AP.Models.Turno;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.Estudiante;
 import com.example.crud_encuesta.Componentes_MT.Intento.IntentoActivity;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.MainActivity;
 import com.example.crud_encuesta.R;
 
@@ -54,7 +55,8 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
     JsonObjectRequest jsonObjectRequest;
     DAOTurno daoTurno;
     ProgressDialog progressDialog;
-    String UrlBase = "http://sigen.herokuapp.com/";
+    Dominio dominio = Dominio.getInstance(this);
+    String UrlBase = dominio.getDominio();
 
     DAOEvaluacion daoEvaluacion;
     DAOUsuario daoUsuario;
@@ -123,7 +125,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.ap_fab_agregar_evaluacion);
         //final EditText edt_buscar = (EditText) findViewById(R.id.ap_edt_buscar_evaluacion);
 
-        if(usuario.getROL()==0 || usuario.getROL()==2){
+        if(usuario.getROL()==0 || usuario.getROL()==2 || usuario.getROL()==1){
             add.setVisibility(View.INVISIBLE);
         }
 
@@ -342,7 +344,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
         }
     }
     public void obtenerEvalucionesTurnos(int id_carga_academica) {
-        String url = UrlBase + "api/evaluaciones_m/turnos_m/"+id_carga_academica+"/"+usuario.getROL();
+        String url = UrlBase + "/api/evaluaciones_m/turnos_m/"+id_carga_academica+"/"+usuario.getROL();
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
