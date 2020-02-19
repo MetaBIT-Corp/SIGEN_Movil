@@ -81,6 +81,9 @@ public class IntentoActivity extends AppCompatActivity {
         preguntas= getPreguntas();
 
         id_intento = id_intento(id_estudiante, id_usuario);
+        System.out.println("ID_INTENTO-----------------------------"+id_intento);
+        System.out.println("ID_ESTUDIANTE-----------------------------"+id_estudiante);
+        System.out.println("ID_USUARIO-----------------------------"+id_usuario);
         if(primerIntento(id_estudiante, id_turno) && id_encuesta==0){
             iniciar_intento();
         }else{

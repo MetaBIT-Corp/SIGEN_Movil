@@ -69,6 +69,16 @@ public class Descargar {
             public void onResponse(JSONObject response) {
                 System.out.println(response.toString());
                 try {
+                    cx.delete("RESPUESTA",null, null);
+                    cx.delete("CLAVE_AREA_PREGUNTA",null, null);
+                    cx.delete("OPCION",null, null);
+                    cx.delete("PREGUNTA",null, null);
+                    cx.delete("GRUPO_EMPAREJAMIENTO",null, null);
+                    cx.delete("CLAVE_AREA",null, null);
+                    cx.delete("INTENTO",null, null);
+                    cx.delete("CLAVE",null, null);
+                    cx.delete("AREA", null,null);
+                    Log.d("LOG","DELETES");
 
                     //Se procede a obtener la clave y almacenarla
                     JSONObject clave = response.getJSONObject("clave");
