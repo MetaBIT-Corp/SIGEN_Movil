@@ -302,7 +302,6 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
                 newEvaluacion.setIdCargaAcad(evaluacion.getInt("id_carga"));
                 newEvaluacion.setRevision(evaluacion.getInt("revision"));
                 newEvaluacion.setMostrar_nota(evaluacion.getInt("mostrar_nota"));
-
                 daoEvaluacion.InsertarWS(newEvaluacion);
             }
 

@@ -37,7 +37,6 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
-    String UrlBase = "http://sigen.herokuapp.com/";
 
     SQLiteDatabase baseDeDatos;
     TextInputLayout tvUsuario;
@@ -185,7 +184,6 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         daoUsuario.DeleteEstudianteAll();
         daoUsuario.DeleteDocenteAll();
 
-        Toast.makeText(this,response.toString(),Toast.LENGTH_LONG).show();
         try{
 
             JSONObject jsonUser = response.getJSONObject("user");
@@ -257,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
 
     public void accesoAWebService(String email, String pass){
         //String url = "http://192.168.0.17:8000/api/user/acceso/"+email+"/"+pass;
-        String url = UrlBase + "api/user/acceso/"+email+"/"+pass;
+        String url = dominio.getDominio() + "/api/user/acceso/"+email+"/"+pass;
         jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
