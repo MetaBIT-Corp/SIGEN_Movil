@@ -102,8 +102,10 @@ public class EvaluacionesPorSubirAdapter  extends BaseAdapter implements Adapter
         int id_pregunta;
         int total;
         int es_rc;
+        int actual=0;
         String txt_respuesta;
 
+        Toast.makeText(context, "La evaluación se está subiendo, favor mantener la conexión a internet", Toast.LENGTH_SHORT).show();
         try{
             Cursor cursor_respuesta = db.rawQuery("SELECT * FROM RESPUESTA WHERE ID_INTENTO="+intento_id, null);
             total = cursor_respuesta.getCount();
@@ -118,10 +120,12 @@ public class EvaluacionesPorSubirAdapter  extends BaseAdapter implements Adapter
                     es_rc = 1;
                 }
 
+                actual++;
+
                 if(txt_respuesta==null)txt_respuesta="";
-                RespuestaWS respuestaWS = new RespuestaWS(context, id_opcion, id_pregunta, intento_id, total, txt_respuesta, 0, es_rc);
+                RespuestaWS respuestaWS = new RespuestaWS(context, id_opcion, id_pregunta, intento_id, total, txt_respuesta, 0, es_rc, actual);
             }
-            Toast.makeText(context, "La evaluación fue subida con éxito", Toast.LENGTH_SHORT).show();
+
             contenedor.put("SUBIDO",1);
             db.update("INTENTO", contenedor, "ID_INTENTO="+intento_id, null);
             db.close();

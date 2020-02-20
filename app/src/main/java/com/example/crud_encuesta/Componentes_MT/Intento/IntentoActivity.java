@@ -81,9 +81,6 @@ public class IntentoActivity extends AppCompatActivity {
         preguntas= getPreguntas();
 
         id_intento = id_intento(id_estudiante, id_usuario);
-        System.out.println("ID_INTENTO-----------------------------"+id_intento);
-        System.out.println("ID_ESTUDIANTE-----------------------------"+id_estudiante);
-        System.out.println("ID_USUARIO-----------------------------"+id_usuario);
         if(primerIntento(id_estudiante, id_turno) && id_encuesta==0){
             iniciar_intento();
         }else{
@@ -313,6 +310,7 @@ public class IntentoActivity extends AppCompatActivity {
         SQLiteDatabase db = databaseAccess.open();
         ContentValues registro = new ContentValues();
         int total_preguntas = 0;
+        int num_pregunta_actual=0;
 
         if(rg_seleccion !=null || rg_seleccion.size()>0){
             total_preguntas += rg_seleccion.size();
@@ -331,7 +329,8 @@ public class IntentoActivity extends AppCompatActivity {
                 db.insert("respuesta", null, registro);
 
                 if(acceso_internet){
-                    RespuestaWS respuestaWS = new RespuestaWS(this, id_seleccion, rg.getId(), id_intento, total_preguntas, "", es_encuesta, 0);
+                    num_pregunta_actual++;
+                    RespuestaWS respuestaWS = new RespuestaWS(this, id_seleccion, rg.getId(), id_intento, total_preguntas, "", es_encuesta, 0, num_pregunta_actual);
                 }
             }
         }
@@ -353,7 +352,8 @@ public class IntentoActivity extends AppCompatActivity {
                 db.insert("respuesta", null, registro);
 
                 if(acceso_internet) {
-                    RespuestaWS respuestaWS = new RespuestaWS(this, id_seleccion, rg.getId(), id_intento, total_preguntas, "", es_encuesta, 0);
+                    num_pregunta_actual++;
+                    RespuestaWS respuestaWS = new RespuestaWS(this, id_seleccion, rg.getId(), id_intento, total_preguntas, "", es_encuesta, 0, num_pregunta_actual);
                 }
             }
         }
@@ -371,7 +371,8 @@ public class IntentoActivity extends AppCompatActivity {
                     db.insert("respuesta", null, registro);
 
                     if(acceso_internet){
-                        RespuestaWS respuestaWS = new RespuestaWS(this, idsSp.get(i).get(sp.getSelectedItemPosition()), sp.getId(), id_intento, total_preguntas, "", es_encuesta, 0);
+                        num_pregunta_actual++;
+                        RespuestaWS respuestaWS = new RespuestaWS(this, idsSp.get(i).get(sp.getSelectedItemPosition()), sp.getId(), id_intento, total_preguntas, "", es_encuesta, 0, num_pregunta_actual);
                     }
                 }
                 i++;
@@ -389,7 +390,8 @@ public class IntentoActivity extends AppCompatActivity {
                 db.insert("respuesta", null, registro);
 
                 if(acceso_internet){
-                    RespuestaWS respuestaWS = new RespuestaWS(this, et.getId(), idPreguntaRC.get(i), id_intento, total_preguntas, et.getText().toString(), es_encuesta, 1);
+                    num_pregunta_actual++;
+                    RespuestaWS respuestaWS = new RespuestaWS(this, et.getId(), idPreguntaRC.get(i), id_intento, total_preguntas, et.getText().toString(), es_encuesta, 1, num_pregunta_actual);
                 }
                 i++;
             }
@@ -411,7 +413,7 @@ public class IntentoActivity extends AppCompatActivity {
 
         if(accesoInternet()){
             reg.put("subido", 1);
-            Toast.makeText(this, "La evaluación fue subida con éxito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "La evaluación se está subiendo, favor mantener la conexión a internet", Toast.LENGTH_SHORT).show();
         }else{
             reg.put("subido", 0);
             Toast.makeText(this, "No tienes conexión a internet para subir la evaluación, intenta nuevamente cuanto tengas conexión a internet", Toast.LENGTH_LONG).show();

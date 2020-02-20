@@ -24,9 +24,10 @@ public class RespuestaWS {
     String texto_respuesta ="";
     int es_encuesta;
     int es_rc;
+    int num_pregunta_actual;
     private Dominio dominio;
 
-    public RespuestaWS(Context context, int opcion_id, int pregunta_id, int intento_id, int total_preguntas, String texto_respuesta, int es_encuesta, int es_rc){
+    public RespuestaWS(Context context, int opcion_id, int pregunta_id, int intento_id, int total_preguntas, String texto_respuesta, int es_encuesta, int es_rc, int num_pregunta_actual){
         this.context = context;
         this.opcion_id = opcion_id;
         this.pregunta_id = pregunta_id;
@@ -35,6 +36,7 @@ public class RespuestaWS {
         this.texto_respuesta = texto_respuesta;
         this.es_encuesta = es_encuesta;
         this.es_rc = es_rc;
+        this.num_pregunta_actual = num_pregunta_actual;
         dominio = Dominio.getInstance(context);
 
         respuesta();
@@ -46,7 +48,9 @@ public class RespuestaWS {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Toast.makeText(context,"Se insertó con éxito",Toast.LENGTH_LONG).show();
+                        if(num_pregunta_actual==total_preguntas){
+                            Toast.makeText(context, "Las preguntas fueron enviadas con éxito", Toast.LENGTH_SHORT).show();
+                        }
                         System.out.println(response);
 
                     }
