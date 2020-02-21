@@ -69,19 +69,10 @@ public class Descargar {
             public void onResponse(JSONObject response) {
                 System.out.println(response.toString());
                 try {
-                    cx.delete("RESPUESTA",null, null);
-                    cx.delete("CLAVE_AREA_PREGUNTA",null, null);
-                    cx.delete("OPCION",null, null);
-                    cx.delete("PREGUNTA",null, null);
-                    cx.delete("GRUPO_EMPAREJAMIENTO",null, null);
-                    cx.delete("CLAVE_AREA",null, null);
-                    cx.delete("INTENTO",null, null);
-                    cx.delete("CLAVE",null, null);
-                    cx.delete("AREA", null,null);
-                    Log.d("LOG","DELETES");
-
                     //Se procede a obtener la clave y almacenarla
                     JSONObject clave = response.getJSONObject("clave");
+
+                    verificacion(clave.getInt("id"));
 
                     ContentValues contenedor_clave = new ContentValues();
                     contenedor_clave.put("ID_CLAVE", clave.getInt("id"));
@@ -414,6 +405,66 @@ public class Descargar {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void verificacion(int clave_id){
+
+        Cursor c;
+
+        c = cx.rawQuery("SELECT * FROM CLAVE WHERE ID_CLAVE = " + clave_id, null);
+
+        if (c.moveToFirst()){
+            Cursor c2 = cx.rawQuery("SELECT * FROM CLAVE_AREA WHERE ID_CLAVE = " + c.getInt(c.getColumnIndex("ID_CLAVE")), null);
+            if(c2.moveToFirst()){
+                do{
+                    Cursor c3 = cx.rawQuery("SELECT * FROM CLAVE_AREA_PREGUNTA WHERE ID_CLAVE_AREA = " + c2.getInt(c2.getColumnIndex("ID_CLAVE_AREA")), null);
+                    if(c3.moveToFirst()){
+                        do{
+                            Cursor c4 = cx.rawQuery("SELECT * FROM PREGUNTA WHERE ID_PREGUNTA = " + c3.getInt(c3.getColumnIndex("ID_PREGUNTA")), null);
+                            if(c4.moveToNext()){
+                                do {
+                                    Cursor c5 = cx.rawQuery("SELECT * FROM OPCION WHERE ID_PREGUNTA = " + c4.getInt(c4.getColumnIndex("ID_PREGUNTA")), null);
+                                    if(c5.moveToFirst()){
+                                        do{
+                                            Cursor c6 = cx.rawQuery("SELECT * FROM RESPUESTA WHERE ID_OPCION = " + c5.getInt(c5.getColumnIndex("ID_OPCION")), null);
+                                            if(c6.moveToFirst()){
+                                                do{
+                                                    cx.delete("RESPUESTA","ID_RESPUESTA = " + c6.getInt(c6.getColumnIndex("ID_RESPUESTA")), null);
+                                                }while (c6.moveToNext());
+                                            }
+                                            cx.delete("OPCION","ID_OPCION = " + c5.getInt(c5.getColumnIndex("ID_OPCION")), null);
+                                        }while (c5.moveToNext());
+                                    }
+                                    cx.delete("PREGUNTA","ID_PREGUNTA = " + c4.getInt(c4.getColumnIndex("ID_PREGUNTA")), null);
+                                    //Eliminar GPO_EMP
+                                    cx.delete("GRUPO_EMPAREJAMIENTO","ID_GRUPO_EMP = " + c4.getInt(c4.getColumnIndex("ID_GRUPO_EMP")), null);
+
+                                }while (c4.moveToNext());
+                            }
+                            cx.delete("CLAVE_AREA_PREGUNTA","ID_CLAVE_AREA_PRE = " + c3.getInt(c3.getColumnIndex("ID_CLAVE_AREA_PRE")), null);
+                        }while(c3.moveToNext());
+                    }
+                    cx.delete("CLAVE_AREA","ID_CLAVE_AREA = " + c2.getInt(c2.getColumnIndex("ID_CLAVE_AREA")), null);
+                    cx.delete("AREA","ID_AREA = " + c2.getInt(c2.getColumnIndex("ID_AREA")), null);
+                }while (c2.moveToNext());
+            }
+            cx.delete("CLAVE","ID_CLAVE = " + c.getInt(c.getColumnIndex("ID_CLAVE")), null);
+            Cursor c7 = cx.rawQuery("SELECT * FROM INTENTO WHERE ID_CLAVE = " + c.getInt(c.getColumnIndex("ID_CLAVE")), null);
+
+            if(c7.moveToFirst())
+                cx.delete("INTENTO","ID_INTENTO = " + c7.getInt(c7.getColumnIndex("ID_INTENTO")), null);
+        }
+
+        /*cx.delete("RESPUESTA",null, null);
+        cx.delete("CLAVE_AREA_PREGUNTA",null, null);
+        cx.delete("OPCION",null, null);
+        cx.delete("PREGUNTA",null, null);
+        cx.delete("GRUPO_EMPAREJAMIENTO",null, null);
+        cx.delete("CLAVE_AREA",null, null);
+        cx.delete("INTENTO",null, null);
+        cx.delete("CLAVE",null, null);
+        cx.delete("AREA", null,null);
+        Log.d("LOG","DELETES");*/
     }
 
 }
