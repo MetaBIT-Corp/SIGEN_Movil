@@ -81,8 +81,8 @@ public class TurnoActivity extends AppCompatActivity {
         ImageView all = (ImageView) findViewById(R.id.ap_imgv_all_turno);
         final EditText edt_buscar = (EditText) findViewById(R.id.ap_edt_buscar_turno);
 
-        if(usuario.getROL()==0 || usuario.getROL()==2){
-            add.setVisibility(View.INVISIBLE);
+        if(usuario.getROL()==0 || usuario.getROL()==1 || usuario.getROL()==2){
+            add.setVisibility(View.GONE);
         }
 
         ListView listView = (ListView) findViewById(R.id.lista_turno);

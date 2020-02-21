@@ -138,7 +138,6 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int id_evaluacion = evaluaciones.get(position).getId();
-                Toast.makeText(view.getContext(),"Paso a turno",Toast.LENGTH_LONG).show();
                 Intent i = new Intent(view.getContext(), TurnoActivity.class);
                 //enviamos parametro
                 Bundle bundle = new Bundle();
@@ -314,7 +313,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
                 newTurno.setIdEvaluacion(turno.getInt("evaluacion_id"));
                 newTurno.setDateInicial(turno.getString("fecha_inicio_turno").replace("-","/"));
                 newTurno.setDateFinal(turno.getString("fecha_final_turno").replace("-","/"));
-
+                newTurno.setVisible(turno.getInt("visibilidad"));
                 daoTurno.InsertarWS(newTurno);
             }
                 //refrescamos la lista

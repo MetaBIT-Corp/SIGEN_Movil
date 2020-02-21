@@ -62,7 +62,7 @@
             android:layout_height="0dp" />
 
 
-        <Button
+        <ImageView
             android:id="@+id/btn_grafico"
             android:layout_width="40dp"
             android:layout_height="40dp"

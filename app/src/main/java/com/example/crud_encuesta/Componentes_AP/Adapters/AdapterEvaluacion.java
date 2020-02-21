@@ -119,10 +119,8 @@ public class AdapterEvaluacion extends BaseAdapter {
         publicar.setVisibility(View.INVISIBLE);
         tv_item.setText(evaluacion.getNombre());
 
-
-
         //Declaracion de boton para GRAFICOS By Ricardo Estupinian
-        Button graficos= view.findViewById(R.id.btn_grafico);
+        ImageView graficos= (ImageView) view.findViewById(R.id.btn_grafico);
 
         graficos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,8 +140,7 @@ public class AdapterEvaluacion extends BaseAdapter {
         if(usuario.getROL()== 0 || usuario.getROL()==2){
             /*editar.setVisibility(View.INVISIBLE);
             eliminar.setVisibility(View.INVISIBLE);*/
-            turnoi.setVisibility(View.INVISIBLE);
-            graficos.setVisibility(View.INVISIBLE);
+            graficos.setVisibility(View.GONE);
         }
 
         //utilizamos setTag para que al presionar editar o eliminar, android sepa cuál registro queremos afectar
@@ -152,7 +149,8 @@ public class AdapterEvaluacion extends BaseAdapter {
         info.setTag(position);
 
 
-        turnoi.setVisibility(View.INVISIBLE);
+        turnoi.setVisibility(View.GONE);
+        descargar.setVisibility(View.GONE);
 
         //TODO: OnCLICKLISTENER DE OPCIONES DE USUARIOS
 

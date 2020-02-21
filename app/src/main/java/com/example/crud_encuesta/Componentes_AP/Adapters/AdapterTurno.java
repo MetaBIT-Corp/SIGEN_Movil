@@ -137,10 +137,10 @@ public class AdapterTurno extends BaseAdapter {
         String fechafinal = turno.getDateFinal();
         String[] pfechafinal = fechafinal.split(" ");
 
-        tv_item.setText("Turno " + (position + 1));
+
 
         //Declaracion de boton para GRAFICOS By Ricardo Estupinian
-        Button graficos= view.findViewById(R.id.btn_grafico);
+        ImageView graficos= (ImageView) view.findViewById(R.id.btn_grafico);
         graficos.setVisibility(View.INVISIBLE);
 
 
@@ -150,9 +150,20 @@ public class AdapterTurno extends BaseAdapter {
         if(usuario.getROL()== 0 || usuario.getROL()==2){
            /* editar.setVisibility(View.INVISIBLE);
             eliminar.setVisibility(View.INVISIBLE);*/
-            turnoi.setVisibility(View.INVISIBLE);
-            info.setVisibility(View.INVISIBLE);
-            publicar.setVisibility(View.INVISIBLE);
+            turnoi.setVisibility(View.GONE);
+            info.setVisibility(View.GONE);
+            publicar.setVisibility(View.GONE);
+
+            tv_item.setText("Turno " + (position + 1) + "     Intentos realizados: " + daoTurno.getNumeroIntento(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante())));
+        }else {
+            turnoi.setVisibility(View.GONE);
+            descargar.setVisibility(View.GONE);
+            graficos.setVisibility(View.GONE);
+            tv_item.setText("Turno " + (position + 1));
+        }
+
+        if(turno.getVisible()==1){
+            publicar.setVisibility(View.GONE);
         }
 
         //utilizamos setTag para que al presionar editar o eliminar, android sepa cuál registro queremos afectar
@@ -161,6 +172,7 @@ public class AdapterTurno extends BaseAdapter {
         info.setTag(position);
         turnoi.setTag(position);
         publicar.setTag(position);
+        descargar.setTag(position);
 
         publicar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +184,7 @@ public class AdapterTurno extends BaseAdapter {
                  * */
                 //Si hay internet se va a realizar la consulta al ws
                 if(isInternetAvailable()){
-                    progress("Cargando...", view.getContext());
+                    progress("Publicando...", view.getContext());
                     Dominio dominio = Dominio.getInstance(view.getContext());
                     String UrlBase = dominio.getDominio();
 
@@ -196,6 +208,14 @@ public class AdapterTurno extends BaseAdapter {
         descargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //recuperamos la posicion del registro
+                int pos = Integer.parseInt(v.getTag().toString());
+
+                //recuperamos el registro de la lista y seteamos el id
+                turno = turnos.get(pos);
+                setIdTurno(turno.getId());
+
                 if(daoTurno.PoseeTurnoDescargadoSinResponder(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante()))){
                     Toast.makeText(v.getContext(),"Ya posee una evaluación descargada",Toast.LENGTH_LONG).show();
                 }else {

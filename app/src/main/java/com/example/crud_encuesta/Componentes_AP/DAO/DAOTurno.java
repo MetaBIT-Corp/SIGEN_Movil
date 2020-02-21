@@ -162,6 +162,20 @@ public class DAOTurno {
         return poseeTurnoDescargado;
     }
 
+    public int getNumeroIntento(int id_intento){
+        baseDeDatos = this.dba.open();
+        int numeroIntento = 0;
+
+        Cursor cursorIntento = baseDeDatos.rawQuery("Select NUMERO_INTENTO FROM INTENTO WHERE ID_INTENTO ="+ id_intento,
+                null);
+        if(cursorIntento.getCount()>0){
+            if(cursorIntento.moveToFirst()){
+                numeroIntento = cursorIntento.getInt(0);
+            }
+        }
+        return numeroIntento;
+    }
+
 
 
 

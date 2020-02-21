@@ -69,6 +69,11 @@ public class Descargar {
             public void onResponse(JSONObject response) {
                 System.out.println(response.toString());
                 try {
+                    //Se procede a verificar si posee turno
+
+                    if (response.getInt("resultado") == 0) {
+                        Toast.makeText(context, "No se pudo descargar. Intentos disponibles: "+response.getString("resultado"), Toast.LENGTH_LONG).show();
+                    } else {
                     //Se procede a obtener la clave y almacenarla
                     JSONObject clave = response.getJSONObject("clave");
 
@@ -79,7 +84,7 @@ public class Descargar {
                     contenedor_clave.put("ID_TURNO", clave.getInt("turno_id"));
                     contenedor_clave.put("NUMERO_CLAVE", clave.getInt("numero_clave"));
 
-                    cx.insert("CLAVE",null,contenedor_clave);
+                    cx.insert("CLAVE", null, contenedor_clave);
 
                     //Se procede a obtener el intento y almacenarlo
                     JSONObject intento = response.getJSONObject("intento");
@@ -90,7 +95,7 @@ public class Descargar {
                     contenedor_intento.put("ID_CLAVE", intento.getInt("clave_id"));
                     contenedor_intento.put("FECHA_INICIO_INTENTO", intento.getString("fecha_inicio_intento"));
 
-                    cx.insert("INTENTO",null,contenedor_intento);
+                    cx.insert("INTENTO", null, contenedor_intento);
 
                     //Se procede a obtener las clave_areas, recorerlas y almacenarlas
                     JSONArray clave_areas = response.getJSONArray("clave_areas");
@@ -106,7 +111,7 @@ public class Descargar {
                         contenedor_clave_area.put("ALEATORIO", clave_area.getInt("aleatorio"));
                         contenedor_clave_area.put("PESO", clave_area.getInt("peso"));
 
-                        cx.insert("CLAVE_AREA",null,contenedor_clave_area);
+                        cx.insert("CLAVE_AREA", null, contenedor_clave_area);
                     }
 
                     //Se procede a obtener las areas, recorerlas y almacenarlas
@@ -122,7 +127,7 @@ public class Descargar {
                         contenedor_area.put("ID_TIPO_ITEM", area.getInt("tipo_item_id"));
                         contenedor_area.put("TITULO", area.getString("titulo"));
 
-                        cx.insert("AREA",null,contenedor_area);
+                        cx.insert("AREA", null, contenedor_area);
                     }
 
                     //Se procede a obtener las clave_area_preguntas, recorerlas y almacenarlas
@@ -136,7 +141,7 @@ public class Descargar {
                         contenedor_clave_area_pregunta.put("ID_PREGUNTA", clave_area_pregunta.getInt("pregunta_id"));
                         contenedor_clave_area_pregunta.put("ID_CLAVE_AREA", clave_area_pregunta.getInt("clave_area_id"));
 
-                        cx.insert("CLAVE_AREA_PREGUNTA",null,contenedor_clave_area_pregunta);
+                        cx.insert("CLAVE_AREA_PREGUNTA", null, contenedor_clave_area_pregunta);
 
                     }
 
@@ -151,7 +156,7 @@ public class Descargar {
                         contenedor_grupo_emp.put("ID_AREA", grupo_emp.getInt("area_id"));
                         contenedor_grupo_emp.put("DESCRIPCION_GRUPO_EMP", grupo_emp.getString("descripcion_grupo_emp"));
 
-                        cx.insert("GRUPO_EMPAREJAMIENTO",null,contenedor_grupo_emp);
+                        cx.insert("GRUPO_EMPAREJAMIENTO", null, contenedor_grupo_emp);
                     }
 
                     //Se procede a obtener las preguntas, recorerlas y almacenarlas
@@ -165,7 +170,7 @@ public class Descargar {
                         contenedor_pregunta.put("ID_GRUPO_EMP", pregunta.getInt("grupo_emparejamiento_id"));
                         contenedor_pregunta.put("PREGUNTA", pregunta.getString("pregunta"));
 
-                        cx.insert("PREGUNTA",null,contenedor_pregunta);
+                        cx.insert("PREGUNTA", null, contenedor_pregunta);
                     }
 
                     //Se procede a obtener las opciones, recorerlas y almacenarlas
@@ -180,13 +185,14 @@ public class Descargar {
                         contenedor_opcion.put("OPCION", opcion.getString("opcion"));
                         contenedor_opcion.put("CORRECTA", opcion.getInt("correcta"));
 
-                        cx.insert("OPCION",null,contenedor_opcion);
+                        cx.insert("OPCION", null, contenedor_opcion);
 
                     }
                     dba.close();
-                    progressDialog.hide();
-                    Toast.makeText(context, "¡Exito: Se almaceno de manera correcta la Evaluación!", Toast.LENGTH_SHORT).show();
 
+                    Toast.makeText(context, "¡Exito: Se almaceno de manera correcta la Evaluación!", Toast.LENGTH_SHORT).show();
+                }
+                    progressDialog.hide();
                 }catch (JSONException e){
                     e.printStackTrace();
                     dba.close();
