@@ -515,25 +515,48 @@ public class IntentoActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                modelo_respuesta(rg_lista, preguntasSP, et_lista, rg_lista_vf);
                 terminar_intento();
+                modelo_respuesta(rg_lista, preguntasSP, et_lista, rg_lista_vf);
 
                 AlertDialog.Builder nota = new AlertDialog.Builder(IntentoActivity.this);
                 if(id_encuesta==0){
-                    nota.setTitle("Tiempo finalizado");
-                    nota.setCancelable(false);
-                    nota.setMessage("Nota: " + calcular_nota());
-                    nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
-                            i.putExtra("id_estudiante", id_estudiante);
-                            i.putExtra("nota", calcular_nota());
-                            startActivity(i);
-                            finish();
+                        if(mostrarRevision(id_turno)){
+                            nota.setTitle("Evaluación finalizada");
+                            nota.setCancelable(false);
+                            nota.setMessage("Nota: " + calcular_nota());
+                            nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
+                                    i.putExtra("id_estudiante", id_estudiante);
+                                    i.putExtra("nota", calcular_nota());
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                        }else if(mostrarNota(id_turno)){
+                            nota.setTitle("Evaluación finalizada");
+                            nota.setCancelable(false);
+                            nota.setMessage("Nota: " + calcular_nota());
+                            nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+                        }else{
+                            nota.setTitle("Evaluación finalizada");
+                            nota.setCancelable(false);
+                            nota.setMessage("Sus respuestas están siendo almacenadas");
+                            nota.setPositiveButton(R.string.mt_aceptar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
                         }
-                    });
-                    nota.show();
+
+                        nota.show();
                 }
             }
         };

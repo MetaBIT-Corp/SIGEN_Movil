@@ -152,6 +152,7 @@ public class AdapterTurno extends BaseAdapter {
             eliminar.setVisibility(View.INVISIBLE);*/
             turnoi.setVisibility(View.INVISIBLE);
             info.setVisibility(View.INVISIBLE);
+            publicar.setVisibility(View.INVISIBLE);
         }
 
         //utilizamos setTag para que al presionar editar o eliminar, android sepa cuál registro queremos afectar
@@ -195,12 +196,18 @@ public class AdapterTurno extends BaseAdapter {
         descargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(daoTurno.PoseeTurnoDescargadoSinResponder(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante()))){
+                    Toast.makeText(v.getContext(),"Ya posee una evaluación descargada",Toast.LENGTH_LONG).show();
+                }else {
+                    descargar_ws = new Descargar(context);
+                    int turno_id = turno.getId();
+                    int estudiante_id = daoTurno.getIdEstudiante();
+                    //Pasar params reales
+                    descargar_ws.descargar_turno(turno_id, estudiante_id);
 
-                descargar_ws = new Descargar(context);
-                int turno_id = turno.getId();
-                int estudiante_id = daoTurno.getIdEstudiante();
-                //Pasar params reales
-                descargar_ws.descargar_turno(turno_id, estudiante_id);
+                }
+
+
 
             }
         });
@@ -602,7 +609,7 @@ public class AdapterTurno extends BaseAdapter {
                         Toast.makeText(context, "Error: " + error,Toast.LENGTH_LONG).show();
                     }
                 });
-        jsonObjectRequest.setRetryPolicy( new DefaultRetryPolicy(10000,1,1));
+        jsonObjectRequest.setRetryPolicy( new DefaultRetryPolicy(8000,1,1));
         requestQueue.add(jsonObjectRequest);
     }
 

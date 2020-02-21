@@ -128,5 +128,42 @@ public class DAOTurno {
         return idEstudiante;
     }
 
+    public int getIdIntentoTurno(int id_turno, int id_est){
+        baseDeDatos = this.dba.open();
+        int id_clave= 0;
+        int id_intento = 0;
+        Cursor cursorClave = baseDeDatos.rawQuery("Select ID_CLAVE FROM CLAVE WHERE ID_TURNO ="+ id_turno,
+                null);
+        if(cursorClave.moveToFirst()){
+            id_clave = cursorClave.getInt(0);
+        }
+
+        Cursor cursorIntento  = baseDeDatos.rawQuery("Select ID_INTENTO FROM INTENTO WHERE ID_EST=" + id_est+ " AND ID_CLAVE = " + id_clave,
+                null);
+        if(cursorIntento.moveToFirst()){
+            id_intento =cursorIntento.getInt(0);
+        }
+        return id_intento;
+    }
+
+    public Boolean PoseeTurnoDescargadoSinResponder(int id_intento){
+        baseDeDatos = this.dba.open();
+        Boolean poseeTurnoDescargado = false;
+
+        Cursor cursorIntento = baseDeDatos.rawQuery("Select FECHA_FINAL_INTENTO FROM INTENTO WHERE ID_INTENTO ="+ id_intento,
+                null);
+        if(cursorIntento.getCount()>0){
+            if(cursorIntento.moveToFirst()){
+                if(cursorIntento.getString(0) == null){
+                        poseeTurnoDescargado = true;
+                }
+            }
+        }
+        return poseeTurnoDescargado;
+    }
+
+
+
+
 
 }
