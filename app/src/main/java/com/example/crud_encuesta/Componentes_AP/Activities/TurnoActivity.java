@@ -92,52 +92,63 @@ public class TurnoActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 if(usuario.getROL()==2) {
-                    LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     turno = turnos.get(position);
-                    final int id_turno_intento = turno.getId();
 
-                    //creamos alert dialog
-                    AlertDialog.Builder pass_emergente = new AlertDialog.Builder(TurnoActivity.this);
-                    pass_emergente.setCancelable(true);
-                    View v_pass = inflater.inflate(R.layout.contrasenia_layout, null);
+                    //Evalua si posee un turno descargado
+
+                    if(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante())== 0 ||
+                        !daoTurno.PoseeTurnoDescargadoSinResponder(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante()))
+                    ){
+                        Toast.makeText(TurnoActivity.this,"No ha descargado ninguna evaluación. Por favor descargue.", Toast.LENGTH_LONG).show();
+                    }else {
+                        LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        turno = turnos.get(position);
+                        final int id_turno_intento = turno.getId();
+
+                        //creamos alert dialog
+                        AlertDialog.Builder pass_emergente = new AlertDialog.Builder(TurnoActivity.this);
+                        pass_emergente.setCancelable(true);
+                        View v_pass = inflater.inflate(R.layout.contrasenia_layout, null);
 
 
-                    //enlazamos views del dialogo
-                    final TextView tv_dateinicial = (TextView) v_pass.findViewById(R.id.ap_tv_indicaciones);
-                    final EditText pass_turno = (EditText) v_pass.findViewById(R.id.ap_edt_pass_intento);
+                        //enlazamos views del dialogo
+                        final TextView tv_dateinicial = (TextView) v_pass.findViewById(R.id.ap_tv_indicaciones);
+                        final EditText pass_turno = (EditText) v_pass.findViewById(R.id.ap_edt_pass_intento);
 
-                    pass_emergente.setPositiveButton("Ingresar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!pass_turno.getText().toString().isEmpty()) {
-                                if ( pass_turno.getText().toString().equals(turno.getContrasenia())) {
-                                    Intent intent = new Intent(view.getContext(), IntentoActivity.class);
-                                    intent.putExtra("id_turno_intento", id_turno_intento);
-                                    intent.putExtra("id_estudiante",id_estudiante);
-                                    startActivity(intent);
+                        pass_emergente.setPositiveButton("Ingresar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (!pass_turno.getText().toString().isEmpty()) {
+                                    if ( pass_turno.getText().toString().equals(turno.getContrasenia())) {
+                                        Intent intent = new Intent(view.getContext(), IntentoActivity.class);
+                                        intent.putExtra("id_turno_intento", id_turno_intento);
+                                        intent.putExtra("id_estudiante",id_estudiante);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(TurnoActivity.this,
+                                                getResources().getText(R.string.ap_contrasenia_no_valida),
+                                                Toast.LENGTH_SHORT).show();
+                                        pass_turno.setText("");
+                                    }
                                 } else {
                                     Toast.makeText(TurnoActivity.this,
-                                            getResources().getText(R.string.ap_contrasenia_no_valida),
+                                            getResources().getText(R.string.ap_llena_los_campos),
                                             Toast.LENGTH_SHORT).show();
                                     pass_turno.setText("");
                                 }
-                            } else {
-                                Toast.makeText(TurnoActivity.this,
-                                        getResources().getText(R.string.ap_llena_los_campos),
-                                        Toast.LENGTH_SHORT).show();
-                                pass_turno.setText("");
                             }
-                        }
-                    });
+                        });
 
-                    pass_emergente.setNegativeButton(getResources().getText(R.string.ap_cancelar), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // no esperamos que haga nada al cerrar, solo se cierra
-                        }
-                    });
-                    pass_emergente.setView(v_pass);
-                    pass_emergente.show();
+                        pass_emergente.setNegativeButton(getResources().getText(R.string.ap_cancelar), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // no esperamos que haga nada al cerrar, solo se cierra
+                            }
+                        });
+                        pass_emergente.setView(v_pass);
+                        pass_emergente.show();
+                    }
+
 
                 }
             }

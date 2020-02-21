@@ -46,17 +46,6 @@
 
 
             -->
-
-        <android.support.v4.widget.Space
-            android:layout_width="10dp"
-            android:layout_height="0dp" />
-
-        <ImageView
-            android:id="@+id/ap_publicar_turno"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_publish_black_24dp" />
-
         <android.support.v4.widget.Space
             android:layout_width="10dp"
             android:layout_height="0dp" />
@@ -73,11 +62,23 @@
             android:layout_height="0dp" />
 
 
-        <ImageView
-            android:id="@+id/btn_descargar"
+        <Button
+            android:id="@+id/btn_grafico"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/download_icon"/>
+            android:layout_weight="1"
+            android:background="@drawable/ic_grafico" />
+
+
+        <android.support.v4.widget.Space
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/ap_publicar_turno"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_publish_black_24dp" />
 
 
         <android.support.v4.widget.Space
@@ -85,12 +86,14 @@
             android:layout_height="0dp" />
 
 
-        <Button
-            android:id="@+id/btn_grafico"
+        <ImageView
+            android:id="@+id/btn_descargar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/ic_grafico" />
+            android:background="@drawable/download_icon"/>
+
+
+
 
         <android.support.v4.widget.Space
             android:layout_width="10dp"

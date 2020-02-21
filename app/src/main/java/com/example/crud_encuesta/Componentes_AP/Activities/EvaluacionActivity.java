@@ -39,7 +39,7 @@ import com.example.crud_encuesta.Componentes_AP.Models.Evaluacion;
 import com.example.crud_encuesta.Componentes_AP.Models.Turno;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.Estudiante;
-import com.example.crud_encuesta.Componentes_MT.Intento.IntentoActivity;
+//import com.example.crud_encuesta.Componentes_MT.Intento.IntentoActivity;
 import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.MainActivity;
 import com.example.crud_encuesta.R;
