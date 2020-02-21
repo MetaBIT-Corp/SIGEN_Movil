@@ -107,7 +107,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
         * */
         //Si hay internet se va a realizar la consulta al ws
         if(isInternetAvailable()){
-            progress("Cargando...");
+            progress("Cargando Evaluaciones...");
             obtenerEvalucionesTurnos(id_carga_academica);
         }
 
@@ -138,7 +138,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int id_evaluacion = evaluaciones.get(position).getId();
-
+                Toast.makeText(view.getContext(),"Paso a turno",Toast.LENGTH_LONG).show();
                 Intent i = new Intent(view.getContext(), TurnoActivity.class);
                 //enviamos parametro
                 Bundle bundle = new Bundle();
