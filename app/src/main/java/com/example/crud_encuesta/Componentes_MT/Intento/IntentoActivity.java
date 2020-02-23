@@ -26,6 +26,7 @@ import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_MT.finalizarIntentoWS.RespuestaWS;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.R;
 
 import java.math.BigDecimal;
@@ -65,12 +66,14 @@ public class IntentoActivity extends AppCompatActivity {
     private ArrayList<ArrayList<Integer>> idsSp = new ArrayList<ArrayList<Integer>>();
 
     DAOUsuario daoUsuario = new DAOUsuario(this);
+    Dominio dominio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intento);
         txtTimer = findViewById(R.id.txtTitle);
+        dominio = Dominio.getInstance(this);
 
         id_turno = getIntent().getIntExtra("id_turno_intento", 0);
         id_encuesta = getIntent().getIntExtra("id_encuesta", 0);
@@ -696,17 +699,11 @@ public class IntentoActivity extends AppCompatActivity {
     }
 
     public boolean accesoInternet(){
-        try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
-
-            int val = p.waitFor();
-            boolean accesible = (val == 0);
-            return accesible;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(dominio.getDominio() == null){
+            return false;
+        }else{
+            return true;
         }
-        return false;
     }
 
     public boolean mostrarNota(int id){
