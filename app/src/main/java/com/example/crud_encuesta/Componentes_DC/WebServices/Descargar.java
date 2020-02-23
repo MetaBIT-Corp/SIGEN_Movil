@@ -94,6 +94,7 @@ public class Descargar {
                     contenedor_intento.put("ID_EST", intento.getInt("estudiante_id"));
                     contenedor_intento.put("ID_CLAVE", intento.getInt("clave_id"));
                     contenedor_intento.put("FECHA_INICIO_INTENTO", intento.getString("fecha_inicio_intento"));
+                    contenedor_intento.put("NUMERO_INTENTO", intento.getString("numero_intento"));
 
                     cx.insert("INTENTO", null, contenedor_intento);
 
