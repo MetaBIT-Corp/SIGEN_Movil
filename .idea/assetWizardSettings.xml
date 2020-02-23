@@ -24,6 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -51,7 +52,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="64" />
+                                                <entry key="scalingPercent" value="102" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -62,8 +63,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="57a2ff" />
-                                      <entry key="foregroundImage" value="C:\Users\joel\Desktop\definitivo.png" />
+                                      <entry key="foregroundImage" value="C:\Users\joel\Desktop\sigen.PNG" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -85,6 +85,23 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\joel\Desktop\tempsnip.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
