@@ -55,7 +55,7 @@ public class EncuestaActivityWS extends AppCompatActivity implements Response.Li
 
         encuestasDescargadas = daoEncuestaWS.encuestasDescargadas();
 
-        if(accesoInternet()){
+        if(dominio.getDominio() != null){
             progress("Cargando... ");
             getEncuestasVigentes();
         }else{
@@ -79,7 +79,7 @@ public class EncuestaActivityWS extends AppCompatActivity implements Response.Li
     @Override
     public void onErrorResponse(VolleyError error) {
         progressDialog.cancel();
-        Toast.makeText(this, "Prueba tu conexión a internet e intentalo nuevamente", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "No hay conexión con el servidor.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -167,17 +167,4 @@ public class EncuestaActivityWS extends AppCompatActivity implements Response.Li
         return convertido;
     }
 
-    public boolean accesoInternet(){
-        try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
-
-            int val = p.waitFor();
-            boolean accesible = (val == 0);
-            return accesible;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }
