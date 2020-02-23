@@ -50,19 +50,27 @@ public class Descargar {
     public void descargar_turno(int turno_id, int estudiante_id){
         //Se procede a verificar que el usuario tenga acceso a Internet
         //En caso de no tener acceso, se cancela la operación de descarga
-        if (! isInternetAvailable()){
+        /*if (! isInternetAvailable()){
             Toast.makeText(context, "No hay acceso a Internet.", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
 
-        progressDialog.show();
-        cx = dba.open();
+
+
+        String str_dominio = dominio.getDominio();
+        if (str_dominio == null){
+            Toast.makeText(context, "No hay conexión con el servidor.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         RequestQueue request;
         JsonObjectRequest jsonObjectRequest;
 
+        progressDialog.show();
+        cx = dba.open();
+
         request = Volley.newRequestQueue(context);
-        String url = dominio.getDominio() + "/api/evaluacion/turno/" + turno_id + "/obtener/" +estudiante_id;
+        String url =  str_dominio + "/api/evaluacion/turno/" + turno_id + "/obtener/" +estudiante_id;
         System.out.println(url);
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -216,23 +224,29 @@ public class Descargar {
     public void descargar_encuesta(int encuesta_id){
         //Se procede a verificar que el usuario tenga acceso a Internet
         //En caso de no tener acceso, se cancela la operación de descarga
-        if (! isInternetAvailable()){
+        /*if (! isInternetAvailable()){
             Toast.makeText(context, "No hay acceso a Internet.", Toast.LENGTH_LONG).show();
+            return;
+        }*/
+
+
+        String str_dominio = dominio.getDominio();
+        if (str_dominio == null){
+            Toast.makeText(context, "No hay conexión con el servidor.", Toast.LENGTH_LONG).show();
             return;
         }
 
         //Obtener usuario loggeado
         Usuario usuario = daoUsuario.getUsuarioLogueado();
 
+        RequestQueue request;
+        JsonObjectRequest jsonObjectRequest;
 
         progressDialog.show();
         cx = dba.open();
 
-        RequestQueue request;
-        JsonObjectRequest jsonObjectRequest;
-
         request = Volley.newRequestQueue(context);
-        String url = dominio.getDominio() + "/api/encuesta/" + encuesta_id + "/" + usuario.getIDUSUARIO();
+        String url = str_dominio + "/api/encuesta/" + encuesta_id + "/" + usuario.getIDUSUARIO();
 
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -404,7 +418,7 @@ public class Descargar {
         request.add(jsonObjectRequest);
     }
 
-    public boolean isInternetAvailable() {
+    /*public boolean isInternetAvailable() {
         try {
             Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
             return p.waitFor() == 0;
@@ -412,7 +426,7 @@ public class Descargar {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     public void verificacion(int clave_id){
 
