@@ -73,10 +73,10 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
         progressDialog.show();
 
         //Se verifica si hay conexion a internet
-        if (! isInternetAvailable()){
+        if (Dominio.getInstance(this).getDominio()==null){
             listaMateria=Operaciones_CRUD.todosMateria(db,rol,id);
             if(listaMateria.size()==0){
-                Toast.makeText(MateriaUsersActivity.this,"Necesitas internet para acceder a tus materias por primera vez.",Toast.LENGTH_LONG).show();
+                Toast.makeText(MateriaUsersActivity.this,"Necesitas tener acceso al servidor para acceder a tus materias por primera vez.",Toast.LENGTH_LONG).show();
             }
             adapter=new MateriaUserAdapter(MateriaUsersActivity.this,listaMateria,db,this,id,rol);
             listView.setAdapter(adapter);
@@ -169,19 +169,7 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
             url =url_base+"materias/estudiante/"+id;
         }
         jsonArrayRequest=new JsonArrayRequest(Request.Method.GET,url,null,this,this);
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(8000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonArrayRequest);
-    }
-
-    //Funcion para verificar si hay conexion a internet
-    public boolean isInternetAvailable() {
-        try {
-            //Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 "+Dominio.getInstance(this).getName());
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 google.com");
-            return p.waitFor() == 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }

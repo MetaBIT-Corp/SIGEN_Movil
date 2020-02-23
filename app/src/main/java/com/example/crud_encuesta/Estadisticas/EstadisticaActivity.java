@@ -104,12 +104,12 @@ public class EstadisticaActivity extends AppCompatActivity implements Response.L
         });
 
         //Se verifica si hay conexion al dominio
-        if (isInternetAvailable()){
+        if (Dominio.getInstance(this).getDominio()!=null){
             //Llamada al WS
             getEstadisticasWS(idEva);
         }else{
             progressDialog.cancel();
-            Toast.makeText(this,"Se requiere de conexion al dominio configurado.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"No hay conexion con el servidor.",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -211,7 +211,7 @@ public class EstadisticaActivity extends AppCompatActivity implements Response.L
     private void getEstadisticasWS(int idEva){
         String url=url_base+"estadistica/evaluacion/"+idEva;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(8000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -246,18 +246,6 @@ public class EstadisticaActivity extends AppCompatActivity implements Response.L
 
         } catch (Exception e) {
             Log.d("Error", e.toString());
-        }
-    }
-
-    //Funcion para verificar si hay conexion a internet
-    public boolean isInternetAvailable() {
-        try {
-            //Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 "+Dominio.getInstance(this).getName());
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 google.com");
-            return p.waitFor() == 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
     }
 }
