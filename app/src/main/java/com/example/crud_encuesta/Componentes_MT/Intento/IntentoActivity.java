@@ -611,7 +611,7 @@ public class IntentoActivity extends AppCompatActivity {
                 AlertDialog.Builder nota = new AlertDialog.Builder(IntentoActivity.this);
                 if(id_encuesta==0){
 
-                    if(mostrarRevision(id_turno) /*&& verificarIntentos(id_turno, id_intento)*/){
+                    if(mostrarRevision(id_turno) && verificarIntentos(id_turno, id_intento)){
                         nota.setTitle("Evaluación finalizada");
                         nota.setCancelable(false);
                         nota.setMessage("Nota: " + calcular_nota());
