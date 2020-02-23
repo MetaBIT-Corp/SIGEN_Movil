@@ -19,8 +19,9 @@ public class VerIntentoActivity extends AppCompatActivity {
     ListView listView;
     TextView txtTitle;
     int id_estudiante;
-    int id_encuesta;
     int id_usuario;
+    int id_encuesta;
+    int id_turno;
     List<Integer> idSP = new ArrayList<>();
     List<String> opcionSP = new ArrayList<>();
     double nota;
@@ -34,9 +35,12 @@ public class VerIntentoActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
 
         id_estudiante = getIntent().getIntExtra("id_estudiante", 0);
-        nota = getIntent().getDoubleExtra("nota", 0);
-        id_encuesta = getIntent().getIntExtra("id_encuesta", 0);
         id_usuario = getIntent().getIntExtra("id_usuario", 0);
+        id_encuesta = getIntent().getIntExtra("id_encuesta", 0);
+        id_turno = getIntent().getIntExtra("id_turno", 0);
+        nota = getIntent().getDoubleExtra("nota", 0);
+
+
 
         if(id_encuesta==0) txtTitle.setText("Nota: "+nota);
         listView.setAdapter(new VerIntentoAdapter(getPreguntas(), id_encuesta, idSP, opcionSP, this, this));
@@ -59,7 +63,7 @@ public class VerIntentoActivity extends AppCompatActivity {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         SQLiteDatabase db = databaseAccess.open();
 
-        ultimo_intento = IntentoConsultasDB.id_ultimo_intento(id_estudiante, id_usuario, db);
+        ultimo_intento = IntentoConsultasDB.id_ultimo_intento(id_estudiante, id_usuario, id_turno, id_encuesta, db);
 
         String sentencia_pregunta = "SELECT * FROM PREGUNTA WHERE ID_PREGUNTA =";
 
@@ -67,38 +71,43 @@ public class VerIntentoActivity extends AppCompatActivity {
 
         Cursor cursor_eleccion = db.rawQuery("SELECT ID_OPCION, ID_PREGUNTA, TEXTO_RESPUESTA FROM RESPUESTA WHERE ID_INTENTO ="+ultimo_intento, null);
 
-        while (cursor_eleccion.moveToNext()){
-            List<String> opciones = new ArrayList<>();
-            List<Integer> ides = new ArrayList<>();
+        try {
+            while (cursor_eleccion.moveToNext()) {
+                List<String> opciones = new ArrayList<>();
+                List<Integer> ides = new ArrayList<>();
 
-            id_opcion_eleccion = cursor_eleccion.getInt(0);
-            id_pregunta = cursor_eleccion.getInt(1);
-            texto_eleccion = cursor_eleccion.getString(2);
+                id_opcion_eleccion = cursor_eleccion.getInt(0);
+                id_pregunta = cursor_eleccion.getInt(1);
+                texto_eleccion = cursor_eleccion.getString(2);
 
-            Cursor cursor_pregunta = db.rawQuery(sentencia_pregunta+id_pregunta, null);
-            cursor_pregunta.moveToFirst();
+                Cursor cursor_pregunta = db.rawQuery(sentencia_pregunta + id_pregunta, null);
+                cursor_pregunta.moveToFirst();
 
-            id = cursor_pregunta.getInt(0);
-            id_gpo = cursor_pregunta.getInt(1);
-            pregunta = cursor_pregunta.getString(2);
 
-            modalidad = getModalidad(db, id);
-            descripcion = IntentoConsultasDB.getDescripcion(id_gpo, db);
+                id = cursor_pregunta.getInt(0);
+                id_gpo = cursor_pregunta.getInt(1);
+                pregunta = cursor_pregunta.getString(2);
 
-            Cursor cursor_opcion = db.rawQuery(sentencia_opcion+id, null);
-            while (cursor_opcion.moveToNext()){
-                ides.add(cursor_opcion.getInt(0));
-                opciones.add(cursor_opcion.getString(1));
-                if(modalidad==3){
-                    idSP.add(cursor_opcion.getInt(0));
-                    opcionSP.add(cursor_opcion.getString(1));
+                modalidad = getModalidad(db, id);
+                descripcion = IntentoConsultasDB.getDescripcion(id_gpo, db);
+
+                Cursor cursor_opcion = db.rawQuery(sentencia_opcion + id, null);
+                while (cursor_opcion.moveToNext()) {
+                    ides.add(cursor_opcion.getInt(0));
+                    opciones.add(cursor_opcion.getString(1));
+                    if (modalidad == 3) {
+                        idSP.add(cursor_opcion.getInt(0));
+                        opcionSP.add(cursor_opcion.getString(1));
+                    }
+                    if (cursor_opcion.getInt(2) == 1) respuesta = cursor_opcion.getInt(0);
                 }
-                if(cursor_opcion.getInt(2)==1) respuesta=cursor_opcion.getInt(0);
+
+                preguntas.add(new PreguntaRevision(pregunta, descripcion, texto_eleccion, modalidad, id_opcion_eleccion, respuesta, opciones, ides));
+
+                cursor_opcion.close();
             }
-
-            preguntas.add(new PreguntaRevision(pregunta, descripcion, texto_eleccion, modalidad, id_opcion_eleccion, respuesta, opciones, ides));
-
-            cursor_opcion.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         cursor_eleccion.close();

@@ -80,13 +80,14 @@ public class IntentoActivity extends AppCompatActivity {
 
         preguntas= getPreguntas();
 
-        id_intento = id_intento(id_estudiante, id_usuario);
-        if(primerIntento(id_estudiante, id_turno) && id_encuesta==0){
+        id_intento = id_intento(id_estudiante, id_usuario, id_turno, id_encuesta);
+        deleteRespuesta(id_intento);
+        /*if(primerIntento(id_estudiante, id_turno) && id_encuesta==0){
             iniciar_intento();
         }else{
             deleteRespuesta(id_intento);
             sumIntento=true;
-        }
+        }*/
 
         Button finalizar = new Button(this);
         finalizar.setText("Finalizar");
@@ -264,11 +265,11 @@ public class IntentoActivity extends AppCompatActivity {
         return convertido;
     }
 
-    public int id_intento(int id_est, int id_enc){
+    public int id_intento(int id_est, int id_user, int id_turno, int id_encuesta){
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         SQLiteDatabase db = databaseAccess.open();
 
-        return IntentoConsultasDB.id_ultimo_intento(id_est, id_enc, db);
+        return IntentoConsultasDB.id_ultimo_intento(id_est, id_user, id_turno, id_encuesta, db);
     }
 
     public String rc_getOpcion(int id){
@@ -281,7 +282,7 @@ public class IntentoActivity extends AppCompatActivity {
         return  cursor.getString(0);
     }
 
-    public void iniciar_intento() {
+    /*public void iniciar_intento() {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         SQLiteDatabase db = databaseAccess.open();
 
@@ -303,7 +304,7 @@ public class IntentoActivity extends AppCompatActivity {
         }
 
 
-    }
+    }*/
 
     public void modelo_respuesta(List<RadioGroup> rg_seleccion, ArrayList<ArrayList<Spinner>> sp_seleccion_a, List<EditText> et_seleccion, List<RadioGroup> rg_seleccion_vf) {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
@@ -489,11 +490,15 @@ public class IntentoActivity extends AppCompatActivity {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         SQLiteDatabase db = databaseAccess.open();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("fecha_inicio_intento", fecha_actual());
+        /*ContentValues contentValues = new ContentValues();
+        contentValues.put("fecha_inicio_intento", fecha_actual());*/
 
-        db.execSQL("DELETE FROM RESPUESTA WHERE ID_INTENTO="+id_intento);
-        db.update("intento",contentValues, "id_intento="+id_intento, null);
+        try{
+            db.execSQL("DELETE FROM RESPUESTA WHERE ID_INTENTO="+id_intento);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //db.update("intento",contentValues, "id_intento="+id_intento, null);
 
         db.close();
     }
@@ -520,7 +525,7 @@ public class IntentoActivity extends AppCompatActivity {
 
                 AlertDialog.Builder nota = new AlertDialog.Builder(IntentoActivity.this);
                 if(id_encuesta==0){
-                        if(mostrarRevision(id_turno)){
+                        if(mostrarRevision(id_turno) && verificarIntentos(id_turno, id_intento)){
                             nota.setTitle("Evaluación finalizada");
                             nota.setCancelable(false);
                             nota.setMessage("Nota: " + calcular_nota());
@@ -530,6 +535,7 @@ public class IntentoActivity extends AppCompatActivity {
                                     Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
                                     i.putExtra("id_estudiante", id_estudiante);
                                     i.putExtra("nota", calcular_nota());
+                                    i.putExtra("id_turno", id_turno);
                                     startActivity(i);
                                     finish();
                                 }
@@ -586,6 +592,7 @@ public class IntentoActivity extends AppCompatActivity {
         AlertDialog.Builder emergente = new AlertDialog.Builder(this);
         emergente.setTitle(R.string.mt_finalizar);
         emergente.setCancelable(false);
+
         if(id_encuesta==0){
             emergente.setMessage(R.string.mt_finalizar_evaluacion);
         }else{
@@ -604,7 +611,7 @@ public class IntentoActivity extends AppCompatActivity {
                 AlertDialog.Builder nota = new AlertDialog.Builder(IntentoActivity.this);
                 if(id_encuesta==0){
 
-                    if(mostrarRevision(id_turno)){
+                    if(mostrarRevision(id_turno) /*&& verificarIntentos(id_turno, id_intento)*/){
                         nota.setTitle("Evaluación finalizada");
                         nota.setCancelable(false);
                         nota.setMessage("Nota: " + calcular_nota());
@@ -614,6 +621,7 @@ public class IntentoActivity extends AppCompatActivity {
                                 Intent i = new Intent(IntentoActivity.this, VerIntentoActivity.class);
                                 i.putExtra("id_estudiante", id_estudiante);
                                 i.putExtra("nota", calcular_nota());
+                                i.putExtra("id_turno", id_turno);
                                 startActivity(i);
                                 finish();
                             }
@@ -743,6 +751,31 @@ public class IntentoActivity extends AppCompatActivity {
         }
 
         return mostrar;
+    }
+
+    public boolean verificarIntentos(int id_turno, int id_intento){
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        SQLiteDatabase db = databaseAccess.open();
+        boolean es_utiimo_intento = false;
+
+        try{
+            Cursor cursor_evaluacion = db.rawQuery("SELECT INTENTO FROM EVALUACION WHERE ID_EVALUACION IN\n" +
+                                        "(SELECT ID_EVALUACION FROM TURNO WHERE ID_TURNO="+id_turno+")", null);
+
+            Cursor cursor_intento = db.rawQuery("SELECT NUMERO_INTENTO FROM INTENTO WHERE ID_INTENTO="+id_intento, null);
+
+            cursor_evaluacion.moveToFirst();
+            cursor_intento.moveToFirst();
+
+            if(cursor_evaluacion.getInt(0) == cursor_intento.getInt(0)){
+                es_utiimo_intento = true;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return es_utiimo_intento;
     }
 
 
