@@ -35,6 +35,7 @@ public class Descargar {
     private DatabaseAccess dba;
     private ProgressDialog progressDialog;
     private DAOUsuario daoUsuario;
+    private int clave_id;
     //private String url_base = "http://sigen.herokuapp.com/api";
     private Dominio dominio;
 
@@ -245,8 +246,15 @@ public class Descargar {
         progressDialog.show();
         cx = dba.open();
 
+        clave_id = 0;
+
+        Cursor cursor_clave = cx.rawQuery("SELECT * FROM CLAVE WHERE ID_ENCUESTA = " + encuesta_id, null);
+
+        if(cursor_clave.moveToFirst())
+            clave_id = cursor_clave.getInt(cursor_clave.getColumnIndex("ID_CLAVE"));
+
         request = Volley.newRequestQueue(context);
-        String url = str_dominio + "/api/encuesta/" + encuesta_id + "/" + usuario.getIDUSUARIO();
+        String url = str_dominio + "/api/encuesta/" + encuesta_id + "/" + usuario.getIDUSUARIO() + "/" + clave_id;
 
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -254,151 +262,168 @@ public class Descargar {
             public void onResponse(JSONObject response) {
 
                 try {
-                    //Se procede a obtener la clave y almacenarla
-                    JSONObject encuesta = response.getJSONObject("encuesta");
 
-                    ContentValues contenedor_encuesta = new ContentValues();
-                    contenedor_encuesta.put("ID_ENCUESTA", encuesta.getInt("id"));
-                    contenedor_encuesta.put("ID_PDG_DCN", encuesta.getInt("id_docente"));
-                    contenedor_encuesta.put("TITULO_ENCUESTA", encuesta.getString("titulo_encuesta"));
-                    contenedor_encuesta.put("DESCRIPCION_ENCUESTA", encuesta.getString("descripcion_encuesta"));
-                    contenedor_encuesta.put("FECHA_INICIO_ENCUESTA", encuesta.getString("fecha_inicio_encuesta"));
-                    contenedor_encuesta.put("FECHA_FINAL_ENCUESTA", encuesta.getString("fecha_final_encuesta"));
+                    if(clave_id == 0){
+                        //Se procede a obtener la clave y almacenarla
+                        JSONObject encuesta = response.getJSONObject("encuesta");
 
-                    cx.insert("ENCUESTA",null,contenedor_encuesta);
+                        ContentValues contenedor_encuesta = new ContentValues();
+                        contenedor_encuesta.put("ID_ENCUESTA", encuesta.getInt("id"));
+                        contenedor_encuesta.put("ID_PDG_DCN", encuesta.getInt("id_docente"));
+                        contenedor_encuesta.put("TITULO_ENCUESTA", encuesta.getString("titulo_encuesta"));
+                        contenedor_encuesta.put("DESCRIPCION_ENCUESTA", encuesta.getString("descripcion_encuesta"));
+                        contenedor_encuesta.put("FECHA_INICIO_ENCUESTA", encuesta.getString("fecha_inicio_encuesta"));
+                        contenedor_encuesta.put("FECHA_FINAL_ENCUESTA", encuesta.getString("fecha_final_encuesta"));
 
-                    //Se procede a obtener la clave y almacenarla
-                    JSONObject clave = response.getJSONObject("clave");
+                        cx.insert("ENCUESTA",null,contenedor_encuesta);
 
-                    ContentValues contenedor_clave = new ContentValues();
-                    contenedor_clave.put("ID_CLAVE", clave.getInt("id"));
-                    contenedor_clave.put("ID_ENCUESTA", clave.getInt("encuesta_id"));
-                    contenedor_clave.put("NUMERO_CLAVE", clave.getInt("numero_clave"));
+                        //Se procede a obtener la clave y almacenarla
+                        JSONObject clave = response.getJSONObject("clave");
 
-                    cx.insert("CLAVE",null,contenedor_clave);
+                        ContentValues contenedor_clave = new ContentValues();
+                        contenedor_clave.put("ID_CLAVE", clave.getInt("id"));
+                        contenedor_clave.put("ID_ENCUESTA", clave.getInt("encuesta_id"));
+                        contenedor_clave.put("NUMERO_CLAVE", clave.getInt("numero_clave"));
 
-                    //Se procede a obtener el encuestado y almacenarlo
-                    /*JSONObject encuestado = response.getJSONObject("encuestado");
+                        cx.insert("CLAVE",null,contenedor_clave);
 
-                    //Primero vamos a verificar que el Encuestado no exista, antes de intentar ingresarlo
-                    Cursor c = cx.rawQuery("SELECT * FROM ENCUESTADO WHERE ID_ENCUESTADO="+encuestado.getInt("id"), null, null);
+                        //Se procede a obtener el encuestado y almacenarlo
+                        /*JSONObject encuestado = response.getJSONObject("encuestado");
 
-                    if(!c.moveToFirst()){
+                        //Primero vamos a verificar que el Encuestado no exista, antes de intentar ingresarlo
+                        Cursor c = cx.rawQuery("SELECT * FROM ENCUESTADO WHERE ID_ENCUESTADO="+encuestado.getInt("id"), null, null);
 
-                        ContentValues contenedor_encuestado = new ContentValues();
-                        contenedor_encuestado.put("ID_ENCUESTADO", encuestado.getInt("id"));
-                        contenedor_encuestado.put("MAC", encuestado.getString("MAC"));
+                        if(!c.moveToFirst()){
 
-                        cx.insert("ENCUESTADO",null,contenedor_encuestado);
+                            ContentValues contenedor_encuestado = new ContentValues();
+                            contenedor_encuestado.put("ID_ENCUESTADO", encuestado.getInt("id"));
+                            contenedor_encuestado.put("MAC", encuestado.getString("MAC"));
 
-                    }*/
+                            cx.insert("ENCUESTADO",null,contenedor_encuestado);
 
-                    //Se procede a obtener el intento y almacenarlo
-                    JSONObject intento = response.getJSONObject("intento");
+                        }*/
 
-                    ContentValues contenedor_intento = new ContentValues();
-                    contenedor_intento.put("ID_INTENTO", intento.getInt("id"));
-                    contenedor_intento.put("ID_USUARIO", intento.getInt("user_id"));
-                    contenedor_intento.put("ID_CLAVE", intento.getInt("clave_id"));
-                    contenedor_intento.put("FECHA_INICIO_INTENTO", intento.getString("fecha_inicio_intento"));
+                        //Se procede a obtener el intento y almacenarlo
+                        JSONObject intento = response.getJSONObject("intento");
 
-                    cx.insert("INTENTO",null,contenedor_intento);
+                        ContentValues contenedor_intento = new ContentValues();
+                        contenedor_intento.put("ID_INTENTO", intento.getInt("id"));
+                        contenedor_intento.put("ID_USUARIO", intento.getInt("user_id"));
+                        contenedor_intento.put("ID_CLAVE", intento.getInt("clave_id"));
+                        contenedor_intento.put("FECHA_INICIO_INTENTO", intento.getString("fecha_inicio_intento"));
 
-                    //Se procede a obtener las clave_areas, recorerlas y almacenarlas
-                    JSONArray clave_areas = response.getJSONArray("clave_areas");
-                    for (int i = 0; i < clave_areas.length(); i++) {
+                        cx.insert("INTENTO",null,contenedor_intento);
 
-                        JSONObject clave_area = clave_areas.getJSONObject(i);
+                        //Se procede a obtener las clave_areas, recorerlas y almacenarlas
+                        JSONArray clave_areas = response.getJSONArray("clave_areas");
+                        for (int i = 0; i < clave_areas.length(); i++) {
 
-                        ContentValues contenedor_clave_area = new ContentValues();
-                        contenedor_clave_area.put("ID_CLAVE_AREA", clave_area.getInt("id"));
-                        contenedor_clave_area.put("ID_AREA", clave_area.getInt("area_id"));
-                        contenedor_clave_area.put("ID_CLAVE", clave_area.getInt("clave_id"));
-                        contenedor_clave_area.put("NUMERO_PREGUNTAS", clave_area.getInt("numero_preguntas"));
-                        contenedor_clave_area.put("ALEATORIO", clave_area.getInt("aleatorio"));
-                        contenedor_clave_area.put("PESO", clave_area.getInt("peso"));
+                            JSONObject clave_area = clave_areas.getJSONObject(i);
 
-                        cx.insert("CLAVE_AREA",null,contenedor_clave_area);
-                    }
+                            ContentValues contenedor_clave_area = new ContentValues();
+                            contenedor_clave_area.put("ID_CLAVE_AREA", clave_area.getInt("id"));
+                            contenedor_clave_area.put("ID_AREA", clave_area.getInt("area_id"));
+                            contenedor_clave_area.put("ID_CLAVE", clave_area.getInt("clave_id"));
+                            contenedor_clave_area.put("NUMERO_PREGUNTAS", clave_area.getInt("numero_preguntas"));
+                            contenedor_clave_area.put("ALEATORIO", clave_area.getInt("aleatorio"));
+                            contenedor_clave_area.put("PESO", clave_area.getInt("peso"));
 
-                    //Se procede a obtener las areas, recorerlas y almacenarlas
-                    JSONArray areas = response.getJSONArray("areas");
-                    for (int i = 0; i < areas.length(); i++) {
+                            cx.insert("CLAVE_AREA",null,contenedor_clave_area);
+                        }
 
-                        JSONObject area = areas.getJSONObject(i);
+                        //Se procede a obtener las areas, recorerlas y almacenarlas
+                        JSONArray areas = response.getJSONArray("areas");
+                        for (int i = 0; i < areas.length(); i++) {
 
-                        ContentValues contenedor_area = new ContentValues();
-                        contenedor_area.put("ID_AREA", area.getInt("id"));
-//                        contenedor_area.put("ID_CAT_MAT", area.getInt("id_cat_mat"));
-                        contenedor_area.put("ID_PDG_DCN", area.getInt("id_pdg_dcn"));
-                        contenedor_area.put("ID_TIPO_ITEM", area.getInt("tipo_item_id"));
-                        contenedor_area.put("TITULO", area.getString("titulo"));
+                            JSONObject area = areas.getJSONObject(i);
 
-                        cx.insert("AREA",null,contenedor_area);
-                    }
+                            ContentValues contenedor_area = new ContentValues();
+                            contenedor_area.put("ID_AREA", area.getInt("id"));
+    //                        contenedor_area.put("ID_CAT_MAT", area.getInt("id_cat_mat"));
+                            contenedor_area.put("ID_PDG_DCN", area.getInt("id_pdg_dcn"));
+                            contenedor_area.put("ID_TIPO_ITEM", area.getInt("tipo_item_id"));
+                            contenedor_area.put("TITULO", area.getString("titulo"));
 
-                    //Se procede a obtener las clave_area_preguntas, recorerlas y almacenarlas
-                    JSONArray clave_area_preguntas = response.getJSONArray("clave_area_preguntas");
-                    for (int i = 0; i < clave_area_preguntas.length(); i++) {
+                            cx.insert("AREA",null,contenedor_area);
+                        }
 
-                        JSONObject clave_area_pregunta = clave_area_preguntas.getJSONObject(i);
+                        //Se procede a obtener las clave_area_preguntas, recorerlas y almacenarlas
+                        JSONArray clave_area_preguntas = response.getJSONArray("clave_area_preguntas");
+                        for (int i = 0; i < clave_area_preguntas.length(); i++) {
 
-                        ContentValues contenedor_clave_area_pregunta = new ContentValues();
-                        contenedor_clave_area_pregunta.put("ID_CLAVE_AREA_PRE", clave_area_pregunta.getInt("id"));
-                        contenedor_clave_area_pregunta.put("ID_PREGUNTA", clave_area_pregunta.getInt("pregunta_id"));
-                        contenedor_clave_area_pregunta.put("ID_CLAVE_AREA", clave_area_pregunta.getInt("clave_area_id"));
+                            JSONObject clave_area_pregunta = clave_area_preguntas.getJSONObject(i);
 
-                        cx.insert("CLAVE_AREA_PREGUNTA",null,contenedor_clave_area_pregunta);
+                            ContentValues contenedor_clave_area_pregunta = new ContentValues();
+                            contenedor_clave_area_pregunta.put("ID_CLAVE_AREA_PRE", clave_area_pregunta.getInt("id"));
+                            contenedor_clave_area_pregunta.put("ID_PREGUNTA", clave_area_pregunta.getInt("pregunta_id"));
+                            contenedor_clave_area_pregunta.put("ID_CLAVE_AREA", clave_area_pregunta.getInt("clave_area_id"));
 
-                    }
+                            cx.insert("CLAVE_AREA_PREGUNTA",null,contenedor_clave_area_pregunta);
 
-                    //Se procede a obtener los grupos de emparejamiento, recorerlos y almacenarlos
-                    JSONArray grupos_emp = response.getJSONArray("grupos_emp");
-                    for (int i = 0; i < grupos_emp.length(); i++) {
+                        }
 
-                        JSONObject grupo_emp = grupos_emp.getJSONObject(i);
+                        //Se procede a obtener los grupos de emparejamiento, recorerlos y almacenarlos
+                        JSONArray grupos_emp = response.getJSONArray("grupos_emp");
+                        for (int i = 0; i < grupos_emp.length(); i++) {
 
-                        ContentValues contenedor_grupo_emp = new ContentValues();
-                        contenedor_grupo_emp.put("ID_GRUPO_EMP", grupo_emp.getInt("id"));
-                        contenedor_grupo_emp.put("ID_AREA", grupo_emp.getInt("area_id"));
-                        contenedor_grupo_emp.put("DESCRIPCION_GRUPO_EMP", grupo_emp.getString("descripcion_grupo_emp"));
+                            JSONObject grupo_emp = grupos_emp.getJSONObject(i);
 
-                        cx.insert("GRUPO_EMPAREJAMIENTO",null,contenedor_grupo_emp);
-                    }
+                            ContentValues contenedor_grupo_emp = new ContentValues();
+                            contenedor_grupo_emp.put("ID_GRUPO_EMP", grupo_emp.getInt("id"));
+                            contenedor_grupo_emp.put("ID_AREA", grupo_emp.getInt("area_id"));
+                            contenedor_grupo_emp.put("DESCRIPCION_GRUPO_EMP", grupo_emp.getString("descripcion_grupo_emp"));
 
-                    //Se procede a obtener las preguntas, recorerlas y almacenarlas
-                    JSONArray preguntas = response.getJSONArray("preguntas");
-                    for (int i = 0; i < preguntas.length(); i++) {
+                            cx.insert("GRUPO_EMPAREJAMIENTO",null,contenedor_grupo_emp);
+                        }
 
-                        JSONObject pregunta = preguntas.getJSONObject(i);
+                        //Se procede a obtener las preguntas, recorerlas y almacenarlas
+                        JSONArray preguntas = response.getJSONArray("preguntas");
+                        for (int i = 0; i < preguntas.length(); i++) {
 
-                        ContentValues contenedor_pregunta = new ContentValues();
-                        contenedor_pregunta.put("ID_PREGUNTA", pregunta.getInt("id"));
-                        contenedor_pregunta.put("ID_GRUPO_EMP", pregunta.getInt("grupo_emparejamiento_id"));
-                        contenedor_pregunta.put("PREGUNTA", pregunta.getString("pregunta"));
+                            JSONObject pregunta = preguntas.getJSONObject(i);
 
-                        cx.insert("PREGUNTA",null,contenedor_pregunta);
-                    }
+                            ContentValues contenedor_pregunta = new ContentValues();
+                            contenedor_pregunta.put("ID_PREGUNTA", pregunta.getInt("id"));
+                            contenedor_pregunta.put("ID_GRUPO_EMP", pregunta.getInt("grupo_emparejamiento_id"));
+                            contenedor_pregunta.put("PREGUNTA", pregunta.getString("pregunta"));
 
-                    //Se procede a obtener las opciones, recorerlas y almacenarlas
-                    JSONArray opciones = response.getJSONArray("opciones");
-                    for (int i = 0; i < opciones.length(); i++) {
+                            cx.insert("PREGUNTA",null,contenedor_pregunta);
+                        }
 
-                        JSONObject opcion = opciones.getJSONObject(i);
+                        //Se procede a obtener las opciones, recorerlas y almacenarlas
+                        JSONArray opciones = response.getJSONArray("opciones");
+                        for (int i = 0; i < opciones.length(); i++) {
 
-                        ContentValues contenedor_opcion = new ContentValues();
-                        contenedor_opcion.put("ID_OPCION", opcion.getInt("id"));
-                        contenedor_opcion.put("ID_PREGUNTA", opcion.getInt("pregunta_id"));
-                        contenedor_opcion.put("OPCION", opcion.getString("opcion"));
-                        contenedor_opcion.put("CORRECTA", opcion.getInt("correcta"));
+                            JSONObject opcion = opciones.getJSONObject(i);
 
-                        cx.insert("OPCION",null,contenedor_opcion);
+                            ContentValues contenedor_opcion = new ContentValues();
+                            contenedor_opcion.put("ID_OPCION", opcion.getInt("id"));
+                            contenedor_opcion.put("ID_PREGUNTA", opcion.getInt("pregunta_id"));
+                            contenedor_opcion.put("OPCION", opcion.getString("opcion"));
+                            contenedor_opcion.put("CORRECTA", opcion.getInt("correcta"));
+
+                            cx.insert("OPCION",null,contenedor_opcion);
+
+                        }
+                    }else{
+                        JSONObject intento = response.getJSONObject("intento");
+                        int intento_id = intento.getInt("id");
+                        //Cursor cursor_intento = cx.rawQuery("SELECT * FROM INTENTO WHERE ID_INTENTO = " + intento_id, null);
+                        cx.delete("INTENTO","ID_CLAVE = " + clave_id, null);
+                        //if(!cursor_intento.moveToFirst()){
+                            ContentValues contenedor_intento = new ContentValues();
+                            contenedor_intento.put("ID_INTENTO", intento_id);
+                            contenedor_intento.put("ID_USUARIO", intento.getInt("user_id"));
+                            contenedor_intento.put("ID_CLAVE", intento.getInt("clave_id"));
+                            contenedor_intento.put("FECHA_INICIO_INTENTO", intento.getString("fecha_inicio_intento"));
+
+                            cx.insert("INTENTO",null,contenedor_intento);
+                        //}
 
                     }
                     dba.close();
                     progressDialog.hide();
                     Toast.makeText(context, "¡Exito: Se almaceno de manera correcta la Encuesta!", Toast.LENGTH_SHORT).show();
-
                 }catch (JSONException e){
                     e.printStackTrace();
                     dba.close();
