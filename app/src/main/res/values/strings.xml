@@ -292,6 +292,8 @@
 
     <string name="info0_estadistica">El periodo para resolver la evaluación aún no ha terminado</string>
     <string name="info1_estadistica"> Esta evaluación no tiene turnos</string>
+    <string name="ws_error">¡Error!</string>
+    <string name="ws_exito">¡Exito!</string>
 
     <string-array name="fruits_array">
         <item>Apples</item>

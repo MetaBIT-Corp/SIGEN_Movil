@@ -25,6 +25,7 @@ import com.example.crud_encuesta.Componentes_AP.DAO.DAOUsuario;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_MR.Docente.ActivityDocente;
 import com.example.crud_encuesta.Componentes_EL.Materia.MateriaUsersActivity;
+import com.example.crud_encuesta.Componentes_MR.Encuesta.ActivityEncuesta;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.ActivityEstudiante;
 import com.example.crud_encuesta.Componentes_MT.Area.AreaActivity;
 import com.example.crud_encuesta.Componentes_MT.Clave.ClaveActivity;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         CardView cv_alumno = (CardView) findViewById(R.id.cardAlumno);
         CardView cv_materiaciclo = (CardView) findViewById(R.id.cardMateriaCiclo);
         CardView cv_pensum = (CardView) findViewById(R.id.cardPensum);
+        CardView cv_encuestas = (CardView) findViewById(R.id.cardEncuestasDocente);
 
         GridLayout grid_menu = (GridLayout) findViewById(R.id.grid_menu);
 
@@ -109,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
         if (rol == 3) {
             //Estudiante
             cardViewCarrera.setVisibility(View.GONE);
+            cv_encuestas.setVisibility(View.GONE);
+        }
+
+        if (rol == 1){
+            cv_encuestas.setVisibility(View.VISIBLE);
         }
 
         if (rol != 0) {
@@ -362,6 +369,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void activity_materia_ciclo(View view) {
         Intent i = new Intent(this, ActivityMateriaCiclo.class);
+        startActivity(i);
+    }
+
+    public void activity_encuestas_docente(View view) {
+        Intent i = new Intent(this, ActivityEncuesta.class);
+        i.putExtra("user_id", id);
         startActivity(i);
     }
 
