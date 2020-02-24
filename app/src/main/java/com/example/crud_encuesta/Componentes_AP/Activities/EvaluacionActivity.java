@@ -39,7 +39,7 @@ import com.example.crud_encuesta.Componentes_AP.Models.Evaluacion;
 import com.example.crud_encuesta.Componentes_AP.Models.Turno;
 import com.example.crud_encuesta.Componentes_AP.Models.Usuario;
 import com.example.crud_encuesta.Componentes_MR.Estudiante.Estudiante;
-import com.example.crud_encuesta.Componentes_MT.Intento.IntentoActivity;
+//import com.example.crud_encuesta.Componentes_MT.Intento.IntentoActivity;
 import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.MainActivity;
 import com.example.crud_encuesta.R;
@@ -107,7 +107,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
         * */
         //Si hay internet se va a realizar la consulta al ws
         if(isInternetAvailable()){
-            progress("Cargando...");
+            progress("Cargando Evaluaciones...");
             obtenerEvalucionesTurnos(id_carga_academica);
         }
 
@@ -138,7 +138,6 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int id_evaluacion = evaluaciones.get(position).getId();
-
                 Intent i = new Intent(view.getContext(), TurnoActivity.class);
                 //enviamos parametro
                 Bundle bundle = new Bundle();
@@ -314,7 +313,7 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
                 newTurno.setIdEvaluacion(turno.getInt("evaluacion_id"));
                 newTurno.setDateInicial(turno.getString("fecha_inicio_turno").replace("-","/"));
                 newTurno.setDateFinal(turno.getString("fecha_final_turno").replace("-","/"));
-
+                newTurno.setVisible(turno.getInt("visibilidad"));
                 daoTurno.InsertarWS(newTurno);
             }
                 //refrescamos la lista

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.crud_encuesta.Componentes_MT.Intento.IntentoConsultasDB;
 import com.example.crud_encuesta.DatabaseAccess;
+import com.example.crud_encuesta.Dominio;
 import com.example.crud_encuesta.R;
 
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ public class EvaluacionesPorSubirAdapter  extends BaseAdapter implements Adapter
     private List<EvaluacionesPorSubir> evaluaciones = new ArrayList<>();
     private DAOEvasPorSibir daoEvasPorSibir;
     private int materia_id;
+    private Dominio dominio;
 
     public EvaluacionesPorSubirAdapter(Context context, List<EvaluacionesPorSubir> evaluaciones, DAOEvasPorSibir daoEvasPorSibir, int materia_id){
         this.context = context;
         this.evaluaciones = evaluaciones;
         this.daoEvasPorSibir = daoEvasPorSibir;
         this.materia_id = materia_id;
+        dominio = Dominio.getInstance(context);
 
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
 
@@ -55,13 +58,13 @@ public class EvaluacionesPorSubirAdapter  extends BaseAdapter implements Adapter
 
             @Override
             public void onClick(View view) {
-                if(accesoInternet()){
+                if(dominio.getDominio() != null){
                     subirEvaluacion(intento_id);
                     evaluaciones = daoEvasPorSibir.getEvaluacionesPorSubir(materia_id);
                     notifyDataSetChanged();
 
                 }else{
-                    Toast.makeText(context, "Error, no hay conexión a intenrnet ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No hay conexión con el servidor.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -133,19 +136,5 @@ public class EvaluacionesPorSubirAdapter  extends BaseAdapter implements Adapter
             e.printStackTrace();
         }
 
-    }
-
-    public boolean accesoInternet(){
-        try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
-
-            int val = p.waitFor();
-            boolean accesible = (val == 0);
-            return accesible;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

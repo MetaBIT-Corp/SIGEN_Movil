@@ -32,11 +32,13 @@ public class Dominio {
             int puerto = c.getInt(c.getColumnIndex("PUERTO"));
             String name = c.getString(c.getColumnIndex("DOMINIO"));
 
-            if (puerto == 443)
-                dominio = "https://" + name + ":" + puerto;
-            else
-                dominio = "http://" + name + ":" + puerto;
-
+            if(isDominioAvailable(name)){
+                if (puerto == 443)
+                    dominio = "https://" + name + ":" + puerto;
+                else
+                    dominio = "http://" + name + ":" + puerto;
+            }else
+                return null;
         }
 
         //dba.close();
@@ -92,5 +94,15 @@ public class Dominio {
             cx.update("DOMINIO", contenedor,"ID_DOMINIO=1", null);
         }
         dba.close();
+    }
+
+    public boolean isDominioAvailable(String name) {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 " + name);
+            return p.waitFor() == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

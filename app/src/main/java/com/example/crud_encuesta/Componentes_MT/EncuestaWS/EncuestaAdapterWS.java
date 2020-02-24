@@ -57,8 +57,8 @@ public class EncuestaAdapterWS extends BaseAdapter implements AdapterView.OnItem
 
         informacion.setTag(i);
         descargar.setTag(i);
-
-        if(encuestasWS.get(i).getLocal()){
+        //encuestasWS.get(i).getLocal()
+        if(false){
             descargar.setVisibility(View.GONE);
         }else{
             check.setVisibility(View.GONE);
@@ -98,7 +98,8 @@ public class EncuestaAdapterWS extends BaseAdapter implements AdapterView.OnItem
 
             @Override
             public void onClick(View view) {
-                if(encuestasWS.get(i).getLocal()){
+                //encuestasWS.get(i).getLocal()
+                if(true){
                     Intent intent=new Intent(context, IntentoActivity.class);
                     intent.putExtra("id_encuesta",(int)getItemId(i));
                     context.startActivity(intent);
