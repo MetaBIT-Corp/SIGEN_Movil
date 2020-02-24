@@ -218,7 +218,7 @@ public class EstadisticaActivity extends AppCompatActivity implements Response.L
     @Override
     public void onErrorResponse(VolleyError error) {
         tx.setText(R.string.estadistica);
-        Toast.makeText(EstadisticaActivity.this,"Error: "+error.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(EstadisticaActivity.this,"Ocurrio un error. Vuelva intentar.",Toast.LENGTH_SHORT).show();
         Log.d("ERROR",error.toString());
         progressDialog.cancel();
     }
@@ -236,6 +236,7 @@ public class EstadisticaActivity extends AppCompatActivity implements Response.L
 
                 drawGrafico(resultados);
             }else{
+
                 if(response.getInt("info")==0){
                     tx.setText(R.string.info0_estadistica);
                 }else{

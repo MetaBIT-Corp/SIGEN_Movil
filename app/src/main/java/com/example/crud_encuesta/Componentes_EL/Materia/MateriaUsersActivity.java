@@ -89,7 +89,7 @@ public class MateriaUsersActivity extends AppCompatActivity implements Response.
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(MateriaUsersActivity.this,"Error: "+error.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(MateriaUsersActivity.this,"Ocurrio un error. Vuelva intentar.",Toast.LENGTH_SHORT).show();
         Log.d("ERROR",error.toString());
         progressDialog.cancel();
     }
