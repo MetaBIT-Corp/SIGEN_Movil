@@ -128,6 +128,16 @@
                                 </PersistentState>
                               </value>
                             </entry>
+<<<<<<< HEAD
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="color" value="1da500" />
+                            <entry key="outputName" value="publish" />
+                            <entry key="sourceFile" value="C:\Users\Admin" />
+=======
+>>>>>>> c42f88f28e0d08453033c1141a7bd1e1a5092c26
                           </map>
                         </option>
                       </PersistentState>

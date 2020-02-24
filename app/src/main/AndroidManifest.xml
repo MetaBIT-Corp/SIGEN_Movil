@@ -15,7 +15,8 @@
         android:label="SIGEN"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".Componentes_MT.finalizarIntentoWS.EvaluacionesPorSubirActivity" />
         <activity android:name=".Componentes_MT.EncuestaWS.EncuestaActivityWS" />
         <activity android:name=".Estadisticas.EstadisticaActivity" />
@@ -68,6 +69,7 @@
         <activity android:name=".Componentes_MR.Docente.ActivityDocente" />
         <activity android:name=".Componentes_MR.Estudiante.ActivityEstudiante" />
         <activity android:name=".Componentes_MR.MateriaCiclo.ActivityMateriaCiclo" />
+        <activity android:name=".Componentes_MR.Encuesta.ActivityEncuesta" />
         <activity
             android:name=".Componentes_MT.Area.AreaActivity"
             android:label="@string/mt_area" />
