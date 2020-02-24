@@ -120,7 +120,9 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
                 break;
 
             case 3:
-                //txt_pregrunta.setText(preguntas.get(position).descripcion);
+                txt_pregrunta.setText(preguntas.get(position).descripcion);
+                txt_pregrunta.setTextSize(10);
+                txt_pregrunta.setTextColor(Color.GRAY);
                 ArrayAdapter<String> comboAdapter;
 
                 TextView txt = new TextView(context);

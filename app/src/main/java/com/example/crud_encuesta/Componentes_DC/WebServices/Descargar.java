@@ -36,7 +36,6 @@ public class Descargar {
     private ProgressDialog progressDialog;
     private DAOUsuario daoUsuario;
     private int clave_id;
-    //private String url_base = "http://sigen.herokuapp.com/api";
     private Dominio dominio;
 
     public Descargar(Context context){
@@ -55,7 +54,6 @@ public class Descargar {
             Toast.makeText(context, "No hay acceso a Internet.", Toast.LENGTH_LONG).show();
             return;
         }*/
-
 
 
         String str_dominio = dominio.getDominio();
@@ -511,6 +509,25 @@ public class Descargar {
         cx.delete("CLAVE",null, null);
         cx.delete("AREA", null,null);
         Log.d("LOG","DELETES");*/
+    }
+
+    public boolean usuarioPoseeIntento(long id_encuesta){
+        boolean existe = false;
+        cx = dba.open();
+        Cursor clave = cx.rawQuery("SELECT * FROM CLAVE WHERE ID_ENCUESTA = " + id_encuesta, null);
+
+        if(clave.moveToFirst()){
+
+            Usuario usuario = daoUsuario.getUsuarioLogueado();
+            Cursor intento = cx.rawQuery("SELECT * FROM INTENTO WHERE ID_CLAVE = " + clave.getInt(clave.getColumnIndex("ID_CLAVE")) + " AND ID_USUARIO = " + usuario.getIDUSUARIO(), null);
+
+            if(intento.moveToFirst()){
+                existe = true;
+            }
+
+        }
+        dba.open();
+        return existe;
     }
 
 }

@@ -145,7 +145,7 @@ public class AdapterTurno extends BaseAdapter {
 
 
         //ocultados de acuerdo a rol
-        DAOUsuario daoUsuario = new DAOUsuario(context);
+        final DAOUsuario daoUsuario = new DAOUsuario(context);
         Usuario usuario = daoUsuario.getUsuarioLogueado();
         if(usuario.getROL()== 0 || usuario.getROL()==2){
            /* editar.setVisibility(View.INVISIBLE);
@@ -219,16 +219,26 @@ public class AdapterTurno extends BaseAdapter {
                 if(daoTurno.PoseeTurnoDescargadoSinResponder(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante()))){
                     Toast.makeText(v.getContext(),"Ya posee una evaluación descargada",Toast.LENGTH_LONG).show();
                 }else {
-                    descargar_ws = new Descargar(context);
-                    int turno_id = turno.getId();
-                    int estudiante_id = daoTurno.getIdEstudiante();
-                    //Pasar params reales
-                    descargar_ws.descargar_turno(turno_id, estudiante_id);
-
+                    //si no posee un primer intento, se descarga
+                    if(daoTurno.getNumeroIntento(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante())) ==0){
+                        descargar_ws = new Descargar(context);
+                        int turno_id = turno.getId();
+                        int estudiante_id = daoTurno.getIdEstudiante();
+                        //Pasar params reales
+                        descargar_ws.descargar_turno(turno_id, estudiante_id);
+                    }else {
+                        //verifica si se tiene un intento pendiente por subir
+                        if(daoTurno.isIntentoSubido(daoTurno.getIdIntentoTurno(turno.getId(),daoTurno.getIdEstudiante()))){
+                            descargar_ws = new Descargar(context);
+                            int turno_id = turno.getId();
+                            int estudiante_id = daoTurno.getIdEstudiante();
+                            //Pasar params reales
+                            descargar_ws.descargar_turno(turno_id, estudiante_id);
+                        }else {
+                            Toast.makeText(v.getContext(),"Hay intentos pendientes por subir",Toast.LENGTH_LONG).show();
+                        }
+                    }
                 }
-
-
-
             }
         });
 

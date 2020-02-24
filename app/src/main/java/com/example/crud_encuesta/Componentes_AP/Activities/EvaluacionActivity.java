@@ -106,7 +106,11 @@ public class EvaluacionActivity extends AppCompatActivity implements Response.Li
         *
         * */
         //Si hay internet se va a realizar la consulta al ws
-        if(isInternetAvailable()){
+        String str_dominio = dominio.getDominio();
+        if (str_dominio == null){
+            Toast.makeText(this, "No hay conexión con el servidor.", Toast.LENGTH_LONG).show();
+            //return;
+        }else {
             progress("Cargando Evaluaciones...");
             obtenerEvalucionesTurnos(id_carga_academica);
         }

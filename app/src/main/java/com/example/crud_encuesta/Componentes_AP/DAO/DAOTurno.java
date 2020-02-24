@@ -176,7 +176,21 @@ public class DAOTurno {
         return numeroIntento;
     }
 
+    public Boolean isIntentoSubido(int id_intento){
+        baseDeDatos = this.dba.open();
+        Boolean subido = false;
 
+        Cursor cursorIntento = baseDeDatos.rawQuery("Select SUBIDO FROM INTENTO WHERE ID_INTENTO ="+ id_intento,
+                null);
+        if(cursorIntento.getCount()>0){
+            if(cursorIntento.moveToFirst()){
+                if (cursorIntento.getInt(0)==1){
+                    subido = true;
+                }
+            }
+        }
+        return subido;
+    }
 
 
 

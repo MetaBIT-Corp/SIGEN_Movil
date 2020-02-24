@@ -82,9 +82,12 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
                     }//si el usuario que se ingresa no es igual al que está en la base, se consulta al webService
                     else{
                         //si no tiene internet le presenta un mensaje que no puede realizar la acción
-                        if (!isInternetAvailable()){
-                            Toast.makeText(v.getContext(), "No hay acceso a Internet.", Toast.LENGTH_LONG).show();
-                        }else{
+
+                        String str_dominio = dominio.getDominio();
+                        if (str_dominio == null){
+                            Toast.makeText(v.getContext(), "No hay conexión con el servidor.", Toast.LENGTH_LONG).show();
+                            //return;
+                        }else {
                             progress("Cargando... ");
                             accesoAWebService(usuario,pass);
                             progressDialog.cancel();

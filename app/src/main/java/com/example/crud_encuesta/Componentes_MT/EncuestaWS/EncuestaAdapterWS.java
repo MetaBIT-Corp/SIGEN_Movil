@@ -28,6 +28,7 @@ public class EncuestaAdapterWS extends BaseAdapter implements AdapterView.OnItem
     private Context context;
     private Descargar descargar_ws;
     private DAOEncuestaWS daoEncuestaWS;
+    private Descargar descargarClass;
 
     private int pos_area;
     private List<EncuestaWS> encuestasWS= new ArrayList<>();
@@ -36,6 +37,7 @@ public class EncuestaAdapterWS extends BaseAdapter implements AdapterView.OnItem
         this.context = context;
         this.encuestasWS = encuestasWS;
         this.daoEncuestaWS = daoEncuestaWS;
+        descargarClass = new Descargar(context);
 
         inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
 
@@ -58,10 +60,13 @@ public class EncuestaAdapterWS extends BaseAdapter implements AdapterView.OnItem
         informacion.setTag(i);
         descargar.setTag(i);
         //encuestasWS.get(i).getLocal()
-        if(false){
+
+        if(descargarClass.usuarioPoseeIntento(getItemId(i))){
             descargar.setVisibility(View.GONE);
+            check.setEnabled(true);
         }else{
             check.setVisibility(View.GONE);
+            check.setEnabled(false);
         }
 
         informacion.setOnClickListener(new View.OnClickListener(){
@@ -99,7 +104,7 @@ public class EncuestaAdapterWS extends BaseAdapter implements AdapterView.OnItem
             @Override
             public void onClick(View view) {
                 //encuestasWS.get(i).getLocal()
-                if(true){
+                if(check.isEnabled()){
                     Intent intent=new Intent(context, IntentoActivity.class);
                     intent.putExtra("id_encuesta",(int)getItemId(i));
                     context.startActivity(intent);
