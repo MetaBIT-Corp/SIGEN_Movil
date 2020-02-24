@@ -156,8 +156,10 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
                             Toast.makeText(v.getContext(), "El campo de puerto no puede quedar vacío", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-                        Toast.makeText(v.getContext(), "Se han guardado los cambios en la configuración del dominio (" + dominio.getDominio() + ")", Toast.LENGTH_LONG).show();
+                        if(dominio.getDominio() == null)
+                            Toast.makeText(v.getContext(), "No hay conexión con el servidor.", Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(v.getContext(), "Se han guardado los cambios en la configuración del dominio (" + dominio.getDominio() + ")", Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
                 });
