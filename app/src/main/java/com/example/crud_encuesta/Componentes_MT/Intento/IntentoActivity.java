@@ -453,8 +453,9 @@ public class IntentoActivity extends AppCompatActivity {
                 }
             }else if(preguntas.get(i).modalidad==4){
                 int id_respuesta = preguntas.get(i).preguntaPList.get(0).respuesta;
-                String valor_digitado = modalidadPreguntas.get(i).getRespuesta_corta().getText().toString().toLowerCase();
-                String respuesta = rc_getOpcion(id_respuesta).toLowerCase();
+                String valor_digitado = modalidadPreguntas.get(i).getRespuesta_corta().getText().toString().toLowerCase().trim();
+                String respuesta = rc_getOpcion(id_respuesta).toLowerCase().trim();
+
                 if(respuesta.equals(valor_digitado)){
                     nota += preguntas.get(i).preguntaPList.get(0).ponderacion;
                 }

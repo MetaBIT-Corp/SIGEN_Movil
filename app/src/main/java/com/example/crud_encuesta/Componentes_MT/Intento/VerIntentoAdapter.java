@@ -164,7 +164,7 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
 
             case 4:
                 int id_respuesta = preguntas.get(position).respuesta;
-                String respuesta = rc_getOpcion(id_respuesta);
+                String respuesta = rc_getOpcion(id_respuesta).toLowerCase().trim();
                 txt_pregrunta.setText(preguntas.get(position).pregunta);
                 txt_pregrunta.setPadding(0,0,0,20);
 
@@ -175,7 +175,7 @@ public class VerIntentoAdapter extends BaseAdapter implements AdapterView.OnItem
                 if(id_encuesta!=0){
                     et_respuesta.setTextColor(Color.BLUE);
                 }else{
-                    if(respuesta.equals(preguntas.get(position).texto_eleccion)){
+                    if(respuesta.equals(preguntas.get(position).texto_eleccion.toLowerCase().trim())){
                         et_respuesta.setTextColor(Color.GREEN);
                     }else{
                         et_respuesta.setTextColor(Color.RED);
