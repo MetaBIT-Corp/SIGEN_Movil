@@ -27,6 +27,7 @@ public class SubMenuMateriaActivity extends AppCompatActivity {
 
         CardView cardView=findViewById(R.id.cardArea);
         //CardView cardView1=findViewById(R.id.cardEstadistica);
+        cardView.setVisibility(View.GONE);
 
         ImageView btnArea=findViewById(R.id.btnArea);
         ImageView btnEva=findViewById(R.id.btnEva);
